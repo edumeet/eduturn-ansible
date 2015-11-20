@@ -15,7 +15,7 @@ ipv4:
 ipv6:
  address: 2001:700:0:4540::166
  netmask: 64
- gateway: 2001:738:0:501::1
+ gateway: 2001:700:0:4540::1
 
 host:
  hostname: coturn-rest-5
