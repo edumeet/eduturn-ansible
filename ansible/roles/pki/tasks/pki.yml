@@ -1,0 +1,54 @@
+# install ca-certs
+- name: Install required packages
+  become: yes
+  apt: name={{ item }} state=installed 
+  with_items:
+   - ca-certificates
+   - openssl
+
+- name: Add group pki
+  become: yes
+  group: 
+    name: '{{ pki_group }}'
+    state: present
+    system: yes
+
+- name: create pki directory
+  become: yes
+  file:
+    path: '{{ pki_location }}'
+    state: directory
+    mode: 0750 
+    owner: root 
+    group: pki
+
+- name: Add certificates and keys
+  become: yes
+  copy: 
+    src: '../../../host_files/{{ ansible_fqdn }}/pki/{{ item }}'
+    dest: '{{ pki_location + "/" + item }}' 
+    directory_mode: 0750 
+    owner: root 
+    group: pki
+  with_items:
+   - '{{ ansible_fqdn }}.key'
+   - '{{ ansible_fqdn }}.crt'
+   - ca.crt
+
+- name: convert pkcs#1 private key
+  become: yes
+  command: openssl rsa -in '{{ pki_location + "/" + ansible_fqdn + ".key" }}' -out '{{ pki_location + "/" + ansible_fqdn + ".pkcs1.key" }}'
+
+- name: Ensure proper file modes for keys
+  become: yes
+  file: 
+    path: '{{ pki_location }}/{{ item.name }}'
+    owner: '{{ item.owner }}'
+    group: '{{ item.group }}'
+    mode: 0640
+  with_items:
+  - { name: '{{ ansible_fqdn }}.pkcs1.key', owner: 'root', group: 'pki' }
+  - { name: '{{ ansible_fqdn }}.key', owner: 'root', group: 'pki' }
+  - { name: '{{ ansible_fqdn }}.crt', owner: 'root', group: 'pki' }
+  - { name: 'ca.crt', owner: 'root', group: 'pki' }
+

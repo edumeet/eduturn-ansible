@@ -1,0 +1,13 @@
+# Update interfaces
+
+- name: Setup networking
+  become: yes
+  template:
+    src: interfaces.j2
+    dest: /etc/network/interfaces
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart networking
+
+

@@ -1,0 +1,9 @@
+# Configure mysql to use UTF8
+- name: Configure mysql to use utf8 /etc/mysql/conf.d/utf8.cnf
+  become: yes
+  copy: 
+    src: utf8.cnf
+    dest: /etc/mysql/conf.d/utf8.cnf
+  when: mysql_utf8 is defined and mysql_utf8
+  notify:
+    - restart mysql

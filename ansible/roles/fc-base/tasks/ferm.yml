@@ -1,0 +1,19 @@
+# Install and Setup Setup Ferm
+
+- name: Install ferm 
+  become: yes
+  apt:
+    name: ferm
+    state: installed
+
+- name: Setup basic ferm.conf
+  become: yes
+  template:
+    src: ferm.conf.j2
+    dest: /etc/ferm/ferm.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Reload ferm
+
+

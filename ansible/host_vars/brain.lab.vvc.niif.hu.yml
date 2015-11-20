@@ -1,0 +1,34 @@
+ipv4:
+ address: 193.224.69.71
+ netmask: 255.255.255.128
+ gateway: 193.224.69.1
+ipv6:
+ address: 2001:738:0:501::71
+ netmask: 64
+ gateway: 2001:738:0:501::1
+
+host:
+ hostname: brain
+ domain: lab.vvc.niif.hu
+
+# mysql
+mysql_server_id: 1
+mysql_replication_role: master
+
+# mysql_replication
+mysql_replication_databases: 
+ - coturn-ltc 
+ - coturn-rest
+
+# apache
+sites:
+  - { name: '{{ ansible_fqdn }}', serveradmin_email: misi@niif.hu }
+
+# simplesamlphp
+ssp:
+  discoveryurl: http://mdx.eduid.hu/role/idp.ds
+  metarefresh:
+    - { name: 'edugain', expire: '60*60*24*4', src: 'https://metadata.eduid.hu/current/edugain.xml', fingerprint: 'FE:AE:0B:E8:FB:59:ED:F7:CB:7F:69:DF:19:4F:8B:6D:C7:F6:96:66' }
+  technicalcontact:
+    name: Mihály Mészáros
+    email: misi@niif.hu

@@ -1,0 +1,25 @@
+# coturn install
+
+- name: Add Debian Jessie Backports
+  become: yes
+  apt_repository:
+    repo: 'deb http://http.debian.net/debian jessie-backports main'
+    state: present
+
+- name: Add Debian Jessie Backports Source
+  become: yes
+  apt_repository:
+    repo: 'deb-src http://http.debian.net/debian jessie-backports main'
+    state: present
+    update_cache: yes
+
+- name: Install coturn package
+  become: yes
+  apt:
+    name: coturn
+    default_release: jessie-backports 
+    force: yes
+    update_cache: yes
+    state: latest
+
+

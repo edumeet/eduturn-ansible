@@ -1,0 +1,6 @@
+# /etc/cron.d/simplesamlphp
+# Cron run: [daily]
+02 0 * * * root curl --silent -k "https://{{ ansible_fqdn }}/simplesamlphp/module.php/cron/cron.php?key={{ ssp_cron_key.stdout }}&tag=daily" > /dev/null 2>&1
+# Cron run: [hourly]
+01 * * * * root curl --silent -k "https://{{ ansible_fqdn }}/simplesamlphp/module.php/cron/cron.php?key={{ ssp_cron_key.stdout }}&tag=hourly" > /dev/null 2>&1
+

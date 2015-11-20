@@ -1,0 +1,16 @@
+# Harden SSL
+- name: Disable SSLv2 and SSLv3
+  become: yes
+  lineinfile: dest=/etc/apache2/mods-available/ssl.conf
+              regexp="^\s*SSLProtocol"
+              line="SSLProtocol all -SSLv2 -SSLv3"
+  notify: Restart httpd
+  tags: disable-ssl3
+
+- name: Use secure SSL ciphers
+  become: yes
+  lineinfile: dest=/etc/apache2/mods-available/ssl.conf
+              regexp="^\s*SSLCipherSuite"
+              line="SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5:!RC4"
+  notify: Restart httpd
+  tags: secure-ssl

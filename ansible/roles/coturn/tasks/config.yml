@@ -1,0 +1,301 @@
+# variables
+#coturn_rest
+#coturn_ mysql_host 
+#coturn_ mysql_db 
+#coturn_ mysql_user
+#coturn_ mysql_password.stdout 
+#coturn_default_realm
+
+# Start coturn automatically
+- name: Run coturn at system startup
+  become: yes
+  lineinfile:
+    dest: /etc/default/coturn
+    regexp: '^#(TURNSERVER_ENABLED=1)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+# coturn config
+
+# listening ports
+- name: Setup coturn listening-port=3478
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(listening-port=3478)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+- name: Setup coturn tls-listening-port=5349
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(tls-listening-port=5349)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+# alternative ports
+- name: Setup coturn alt-listening-port=80
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(alt-listening-port)=0$'
+    line: \1=80
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+- name: Setup coturn alt-tls-listening-port=443
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(alt-tls-listening-port)=0$'
+    line: \1=443
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+# media relay ports
+- name: Setup coturn udp min-port=49152
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(min-port=49152)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+- name: Setup coturn udp max-port=65535
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(max-port=65535)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+# verbosity
+- name: Setup coturn verbose
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(verbose)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+  tags: coturn_verbose
+
+- name: Setup coturn more Verbose
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(Verbose)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+  tags: coturn_Verbose
+
+# fingerprint
+- name: Setup coturn fingerprint
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(fingerprint)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+# long term credential mechanism
+- name: Setup coturn long term credential mechanism, lt-cred-mech
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(lt-cred-mech)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+# time limited long term credential mechanism (REST API)
+- name: Setup coturn time limited long term credential mechanism (For REST API), use-auth-secret
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(use-auth-secret)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+  when: coturn_rest
+
+# Setup user database
+- name: Setup coturn user database
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(mysql-userdb="host)=<host>( dbname)=<database-name>( user)=<database-user>( password)=<database-user-password>( port)=<port>( connect_timeout)=<seconds>(")$'
+    line: '\1={{ coturn_mysql_host }}\2={{ coturn_mysql_db }}\3={{ coturn_mysql_user }}\4={{ coturn_mysql_password.stdout }}\7'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+# Setup default realm
+- name: Setup coturn default realm
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(realm=)mycompany.org$'
+    line: '\1{{ coturn_default_realm }}'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+# Setup stale nonce
+- name: Setup coturn stale-nonce
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(stale-nonce)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+  tags: coturn_harden
+
+# Setup TLS Cert
+- name: Setup coturn TLS cert
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(cert=)/usr/local/etc/turn_server_cert.pem$'
+    line: '\1{{ pki_location }}/{{ ansible_fqdn }}.crt'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+# Setup TLS private key
+- name: Setup coturn TLS private key, pkey
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(pkey=)/usr/local/etc/turn_server_pkey.pem$'
+    line: '\1{{ pki_location }}/{{ ansible_fqdn }}.key'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+# Setup Syslog logging
+- name: Setup coturn Syslog logging
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(syslog)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+# Setup Syslog logging
+- name: Setup coturn Syslog logging
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(syslog)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+
+# Setup no-loopback-peers
+- name: Setup coturn no-loopback-peers
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(no-loopback-peers)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+  tags: coturn_harden
+
+# Setup no-multicast-peers
+- name: Setup coturn no-multicast-peers
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(no-multicast-peers)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+  tags: coturn_harden
+
+# Setup secure-stun
+- name: Setup coturn secure-stun
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(secure-stun)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+  tags: 
+    - coturn_harden
+    - prohibit_anonymous_stun
+
+
+# CLI config
+
+# Setup cli-ip
+- name: Setup coturn cli-ip to ::1
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(cli-ip=)127.0.0.1$'
+    line: '\1::1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+  tags: coturn_cli
+
+# Setup cli-port
+- name: Setup coturn cli-port
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(cli-port=5766)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+  tags: coturn_cli
+
+# Setup cli-password
+- name: Setup coturn cli-password
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(cli-password=)qwerty$'
+    line: '\1$5$c281bba83e2929ea$164a19a1737cf30f504970eeedbd41586bb3eae0861726a471b53be84de3be61'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+  tags: coturn_cli
+
+
+
+
+
+

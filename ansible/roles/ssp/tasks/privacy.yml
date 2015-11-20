@@ -1,0 +1,11 @@
+# Copy Privacy Statement /var/www/privacy.html
+- name: Copy Privacy Statement /var/www/privacy.html
+  become: yes
+  copy:
+    src: ../../../host_files/{{ ansible_fqdn }}/ssp/{{ item }}
+    dest: /var/www/{{ item }} 
+    owner: www-data
+    group: www-data
+    mode: 0644
+  with_items:
+    - privacy.html

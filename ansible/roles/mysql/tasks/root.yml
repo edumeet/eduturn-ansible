@@ -1,0 +1,40 @@
+#Setup root password if not exists
+- name: Check if /root/.my.cnf exists or not
+  become: yes
+  stat: 
+    path: /root/.my.cnf
+  register: mycnf
+  tags: mysql root password
+
+- name: generate mysql_root_password
+  become: no
+  shell: cat /dev/urandom | tr -dc '[:alnum:]' | head -c 32 
+  register: mysql_root_password
+  when: not mycnf.stat.exists
+  tags: mysql root password
+
+- name: update mysql root password for all root accounts
+  become: yes
+  mysql_user: 
+    name: root
+    host: '{{ item }}'
+    password: '{{ mysql_root_password.stdout }}'
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+  when: not mycnf.stat.exists
+  tags: mysql root password
+
+
+- name: Set .my.cnf for root user
+  become: yes
+  template: 
+    src: .my.cnf.j2
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: 600
+    backup: no
+  when: not mycnf.stat.exists
+  tags: mysql root password

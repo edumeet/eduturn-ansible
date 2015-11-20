@@ -1,0 +1,30 @@
+# Purge exim4-config
+- name: Purge exim4
+  become: yes
+  apt:
+    name: exim4-config
+    state: absent
+    purge: yes
+#    force: yes
+
+# Setup /etc/mailname
+- name: Replace mailname
+  become: yes
+  lineinfile:
+    dest: /etc/mailname
+    regexp: ^.*$
+    line: "{{ host.hostname }}.{{ host.domain }}"
+
+# Re-install exim4-config
+- name: Re-install exim4-config
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+    purge: yes
+    force: yes
+    update_cache: yes
+  with_items:
+    - bsd-mailx
+    - exim4-config
+    - exim4

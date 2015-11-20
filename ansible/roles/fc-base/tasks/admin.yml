@@ -1,0 +1,18 @@
+# Add admin user and add to sudo group
+
+- name: Add admin user
+  become: yes
+  user:
+    name: admin
+    state: present
+    groups: sudo
+    shell: /bin/bash
+    append: yes
+    password: $6$pJ4AVun5RdpR1Z1c$LxV7zTsGfslqjkhnBSNLk6hwKZ0rt8SAKdSvfF4/RYgZWFc8DMyGlsExJL2xB74srYlU9kjj73eGH7lgSB4PH1
+
+# Add ssh authorized key
+- name: Add ssh authorized key
+  become: yes
+  authorized_key: 
+    user: admin 
+    key: "{{ lookup('file', 'authorized_keys') }}"

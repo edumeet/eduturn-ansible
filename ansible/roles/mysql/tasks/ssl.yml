@@ -1,0 +1,26 @@
+# Add mysql to pki group to access ssl keys
+- name: Add mysql to pki group to access ssl keys
+  become: yes
+  user:
+    name: mysql
+    state: present
+    groups: '{{ pki_group }}'
+    append: yes
+
+# configure apparmor to pki
+- name: apparmor
+  become: yes
+  lineinfile: 
+    dest: /etc/apparmor.d/local/usr.sbin.mysqld
+    regexp: '^  \/etc\/pki\/\* r,$'
+    line: '  /etc/pki/* r,'
+    insertafter: EOF
+
+# Configure mysql to use SSL
+- name: Configure mysql to use SSL, create /etc/mysql/conf.d/ssl.cnf
+  become: yes
+  template: 
+    src: ssl.cnf.j2 
+    dest: /etc/mysql/conf.d/ssl.cnf
+  notify:
+    - restart mysql

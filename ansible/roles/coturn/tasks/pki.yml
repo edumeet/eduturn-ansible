@@ -1,0 +1,10 @@
+# Add pki to acces X509
+
+- name: Add coturn to pki 
+  become: yes
+  user:
+    name: coturn
+    state: present
+    group: '{{ pki_group }}'
+    append: yes
+

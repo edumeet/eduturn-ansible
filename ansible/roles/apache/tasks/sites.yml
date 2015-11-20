@@ -1,0 +1,29 @@
+# Add sites and enable
+- name: Configure site
+  become: yes
+  template:
+    src: site.j2
+    dest: "/etc/apache2/sites-available/{{ item.name }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  with_items: sites
+
+
+- name: Enable sites
+  become: yes
+  command: a2ensite {{ item.name }}
+  with_items: sites
+  notify:
+    - Restart httpd
+
+# Disable default sites
+- name: Disable default sites
+  become: yes
+  command: a2dissite {{ item }}
+  with_items:
+   - 000-default
+   - default-ssl
+  notify:
+    - Restart httpd

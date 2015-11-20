@@ -1,0 +1,15 @@
+ipv4:
+ address: 193.224.69.59
+ netmask: 255.255.255.128
+ gateway: 193.224.69.1
+ipv6:
+ address: 2001:738:0:501::59
+ netmask: 64
+ gateway: 2001:738:0:501::1
+
+host:
+ hostname: coturn-ltc-2
+ domain: lab.vvc.niif.hu
+
+# mysql
+mysql_server_id: 3

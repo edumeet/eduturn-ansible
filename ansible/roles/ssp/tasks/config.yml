@@ -1,0 +1,33 @@
+# authsources.php
+
+# Setup discovery url
+- name: Setup discovery url
+  become: yes
+  lineinfile:
+    dest: /etc/simplesamlphp/authsources.php
+    state: present
+    regexp: "^([ ]*'discoURL' =>)"
+    line: '\1 "{{ ssp.discoveryurl }}",'
+    backrefs: yes
+
+# config.php
+
+# Setup technicalcontact_name
+- name: Setup technicalcontact_name
+  become: yes
+  lineinfile:
+    dest: /etc/simplesamlphp/config.php
+    state: present
+    regexp: "^([ ]*'technicalcontact_name' =>)"
+    line: \1 '{{ ssp.technicalcontact.name }}',
+    backrefs: yes
+
+# Setup technicalcontact_email
+- name: Setup technicalcontact_email
+  become: yes
+  lineinfile:
+    dest: /etc/simplesamlphp/config.php
+    state: present
+    regexp: "^([ ]*'technicalcontact_email' =>)"
+    line: \1 '{{ ssp.technicalcontact.email }}',
+    backrefs: yes

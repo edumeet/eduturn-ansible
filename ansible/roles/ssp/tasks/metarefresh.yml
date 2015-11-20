@@ -1,0 +1,37 @@
+# Install /etc/simplesamlphp/config-metarefresh.php
+- name: Install /etc/simplesamlphp/config-metarefresh.php
+  become: yes
+  template:
+    src: simplesamlphp/{{ item }}.j2
+    dest: /etc/simplesamlphp/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - config-metarefresh.php
+
+# Setup metarefresh metadata
+- name: Setup metarefresh metadata
+  become: yes
+  lineinfile:
+    dest: /etc/simplesamlphp/config.php
+    state: present
+    insertafter: "^        array.'type' => 'flatfile'.,$"
+    line: "        array('type' => 'flatfile', 'directory' => '/etc/simplesamlphp/metadata/{{ item.name }}/'),\n"
+  with_items: '{{ ssp.metarefresh }}'
+
+# Enable metarefresh module
+- name: Enable metarefresh module
+  become: yes
+  file:
+    dest: /usr/share/simplesamlphp/modules/metarefresh/enable
+    state: touch
+
+# Give access to metadata directory
+- name: Give access to metadata directory
+  become: yes
+  file:
+    dest: /etc/simplesamlphp/metadata/
+    state: directory
+    group: www-data
+    mode: 0775

@@ -1,0 +1,12 @@
+- include: mysql-master.yml tags=coturn_masterdb
+  when: mysql_replication_role == "master"
+- include: package.yml tags=coturn_package
+  when: mysql_replication_role == "master" or mysql_replication_role == "slave"
+- include: mysql-slave.yml tags=coturn_mysql
+  when: mysql_replication_role == "slave"
+- include: config.yml tags=coturn_config
+  when: mysql_replication_role == "slave"
+- include: ferm.yml tags=coturn_ferm
+  when: mysql_replication_role == "slave"
+
+

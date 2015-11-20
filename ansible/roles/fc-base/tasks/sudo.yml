@@ -1,0 +1,27 @@
+# Bootstrap replay
+
+- name: Install sudo in Debian
+  become: yes
+  apt:
+    name: sudo
+    state: installed
+
+- name: Configure sudo
+  become: yes
+  copy:
+    content: "{{ item.value ~ '\n' }}"
+    dest: /etc/sudoers.d/{{ item.key }}
+    mode: 0440
+  with_dict:
+    10_ssh_auth_sock: 'Defaults env_keep+="SSH_AUTH_SOCK"'
+
+- name: Without passwd sudo 
+  become: yes 
+  lineinfile: 
+    dest: /etc/sudoers 
+    state: present
+    regexp: '^%sudo	ALL.*$' 
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+  tags:
+   - sudo-without-passwd
+

@@ -1,0 +1,41 @@
+# Create coturn mysql database
+- name: Create coturn mysql database
+  become: yes
+  mysql_db: 
+    name: '{{ coturn_mysql_db }}'
+    state: present
+
+# Generate coturn_mysql_password 
+- name: Generate coturn_mysql_password
+  become: no
+  shell: cat /dev/urandom | tr -dc '[:alnum:]' | head -c 32
+  register: coturn_mysql_password
+
+# Add mysql coturn and set password grant all rights to coturn db
+- name: Add coturn user to mysql and (set password, require ssl, to db cotrun)
+  become: yes
+  mysql_user:
+    name: '{{ coturn_mysql_user }}'
+    host: '{{ item }}'
+    priv: '{{ coturn_mysql_db + ".*:ALL" }}'
+    password: '{{ coturn_mysql_password.stdout }}'
+    state: present
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost 
+
+## Restrict coturn mysql user to require ssl 
+#- name: Restrict coturn mysql user to require ssl 
+#  become: yes
+#  mysql_user:
+#    name: '{{ coturn_mysql_user }}'
+#    host: '{{ item }}'
+#    priv: '*.*:REQUIRESSL'
+#    password: '{{ coturn_mysql_password.stdout }}'
+#    state: present
+#  with_items:
+#    - 127.0.0.1
+#    - ::1
+#    - localhost 
+#

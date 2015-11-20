@@ -1,0 +1,19 @@
+dns:
+ search_domain: lab.vvc.niif.hu
+ local_domain: lab.vvc.niif.hu
+ ipv6_domain_name_server1: 2001:738:0:701::53:1 
+ ipv6_domain_name_server2: 2001:738:0:701::53:2
+ ipv4_domain_name_server1: 193.225.13.113
+ ipv4_domain_name_server2: 193.225.14.58
+
+timezone: Europe/Budapest
+
+#pki
+pki_location: /etc/pki
+pki_group: pki
+
+#mysql
+mysql_replication_databases:
+ - coturn-ltc
+ - coturn-rest
+

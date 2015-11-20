@@ -1,0 +1,32 @@
+# Generate cron key
+- name: Generate cron key
+  become: no
+  shell: cat /dev/urandom | tr -dc '[:alnum:]' | head -c 32
+  register: ssp_cron_key
+
+# Install /etc/simplesamlphp/module_cron.php
+- name: Install /etc/simplesamlphp/module_cron.php
+  become: yes
+  template:
+    src: simplesamlphp/module_cron.php.j2
+    dest: /etc/simplesamlphp/module_cron.php
+    owner: root
+    group: root
+    mode: 0644
+
+# Install /etc/corn.d/simplesamlphp
+- name: Install /etc/corn.d/simplesamlphp
+  become: yes
+  template:
+    src: cron.d/simplesamlphp.j2
+    dest: /etc/cron.d/simplesamlphp
+    owner: root
+    group: root
+    mode: 0644
+
+# Enable cron module
+- name: Enable cron module
+  become: yes
+  file:
+    dest: /usr/share/simplesamlphp/modules/cron/enable
+    state: touch

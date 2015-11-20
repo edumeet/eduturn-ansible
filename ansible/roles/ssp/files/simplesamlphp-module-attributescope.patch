@@ -1,0 +1,12 @@
+529a530,540
+>         49 => array('class' => 'core:AttributeMap', 'oid2name'),
+> 
+>         // Verify scoped attributes with the metadata:
+>         50 => array(
+>             'class' => 'attributescope:FilterAttributes',
+>             // Default attributes with scope attributes.
+>             // 'attributesWithScope' => array('eduPersonPrincipalName', 'eduPersonScopedAffiliation'),
+>             // Default scopeAttribute
+>             // 'scopeAttributes' => array('schacHomeOrganization'),
+>         ),
+> 

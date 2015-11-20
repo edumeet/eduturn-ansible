@@ -1,0 +1,14 @@
+# Install composer
+- name: Install composer
+  become: yes
+  shell: curl -sS https://getcomposer.org/installer | php
+  args:
+    chdir: /usr/local/bin
+    creates: /usr/local/bin/composer
+
+- name: link composer
+  become: yes
+  command: ln -s composer.phar /usr/local/bin/composer
+  args:
+    chdir: /usr/local/src
+    creates: /usr/local/bin/composer

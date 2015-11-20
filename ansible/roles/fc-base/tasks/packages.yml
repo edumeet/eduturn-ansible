@@ -1,0 +1,55 @@
+# Basic packages
+
+- name: Install basic packages
+  become: yes
+  apt:
+    name: "{{ item }}"
+  with_items:
+   - less
+   - perl
+   - ntp
+   - openssh-blacklist
+   - openssh-blacklist-extra
+   - vim
+   - bind9-host
+   - debian-goodies
+   - strace
+   - atop
+   - ldap-utils
+   - diffutils
+   - mlocate
+   - tcpdump
+   - mktemp
+   - screen
+   - bash-completion
+   - file
+   - wget
+   - cron-apt
+   - git
+   - make
+  tags:
+   - basic-packages
+
+- name: Remove packages
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+   - task-hungarian
+   - manpages-hu
+   - nfs-common
+   - rpcbind
+     
+# Security support
+- name: Other packages for Debian jessie
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+   - debian-security-support
+   - fail2ban
+  when: ansible_distribution_release == 'jessie'
+  tags:
+   - harden

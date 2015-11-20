@@ -1,0 +1,8 @@
+# Configure mysql to not use reverse dns lookup
+- name: Configure mysql to not use reverse dns lookup, create /etc/mysql/conf.d/skip-name-resolve.cnf
+  become: yes
+  copy: 
+    src: skip-name-resolve.cnf
+    dest: /etc/mysql/conf.d/skip-name-resolve.cnf
+  notify:
+    - restart mysql

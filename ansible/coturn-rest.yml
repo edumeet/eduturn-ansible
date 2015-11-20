@@ -1,0 +1,10 @@
+---
+- hosts: coturn-rest
+  vars: 
+    coturn_rest: true  
+  roles:
+    - { role: fc-base }
+    - { role: pki }
+    - { role: mysql }
+    - { role: mysql-replication }
+    - { role: coturn }

@@ -1,0 +1,18 @@
+# Fazy Cloud basic install => fc-base role
+ipv4:
+ address: 193.224.69.58
+ netmask: 255.255.255.128
+ gateway: 193.224.69.1
+ipv6:
+ address: 2001:738:0:501::58
+ netmask: 64
+ gateway: 2001:738:0:501::1
+
+host:
+ hostname: ansible
+ domain: lab.vvc.niif.hu
+
+# coturn
+coturn_rest: true
+coturn_mysql_user: "{{ ansible_fqdn }}"
+coturn_mysql_password: "{{ lookup('password', '../../../host_files/' + ansible_fqdn + '/mysqlpassword') }}"

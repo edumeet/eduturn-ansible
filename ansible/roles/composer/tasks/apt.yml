@@ -1,0 +1,9 @@
+# Install packages required for composer
+- name: Install packages required for composer
+  become: yes
+  apt:
+    name: '{{ item }}'
+    state: installed
+  with_items:
+    - curl
+    - php5-cli

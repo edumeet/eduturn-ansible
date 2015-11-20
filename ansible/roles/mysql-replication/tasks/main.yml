@@ -1,0 +1,6 @@
+- include: common.yml tags=mysql_replication_common
+- include: master.yml tags=mysql_replication_master
+  when: mysql_replication_role == "master"
+- include: slave.yml tags=mysql_replication_slave 
+  when: mysql_replication_role == "slave"
+

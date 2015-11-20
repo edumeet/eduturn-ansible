@@ -1,0 +1,6 @@
+- name: Set timezone
+  template:
+    src: timezone.j2
+    dest: /etc/timezone
+  notify: update timezone
+

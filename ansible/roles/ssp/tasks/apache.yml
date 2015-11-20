@@ -1,0 +1,14 @@
+# Setup simplesamlphp apache.conf according 2.4 style
+- name: Setup simplesamlphp apache.conf according 2.4 style
+  become: yes
+  patch:
+    src: apache.conf.patch
+    dest: /etc/simplesamlphp/apache.conf
+
+# Enable simplesamlphp apache config
+- name: Enable simplesamlphp apache config
+  become: yes
+  command: a2enconf simplesamlphp
+  notify:
+    - Restart httpd
+ 

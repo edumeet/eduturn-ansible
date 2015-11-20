@@ -1,0 +1,8 @@
+# NTP server packages
+
+- name: Install ntp packages
+  become: yes
+  apt:
+    name: "ntp"
+
+

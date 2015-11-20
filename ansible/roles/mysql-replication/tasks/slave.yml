@@ -1,0 +1,145 @@
+# Config binlog replication database filter (replicate_do_db)
+- name: Config binlog replication database filter (replicate_do_db)
+  become: yes
+  lineinfile:
+    dest: /etc/mysql/my.cnf
+    insertafter: '^#binlog_ignore_db	= include_database_name$'
+    line: 'replicate_do_db		= {{ item }}'
+    state: present
+  with_items: '{{ mysql_replication_databases }}'
+  notify: Restart mysql
+
+# Allow ferm IPv4 mysql access delegate_to: master_mysql_server
+- name: Allow ferm IPv4 mysql access delegate_to master_mysql_server
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv4 INPUT rules$'
+    line: '\n            # allow {{ ansible_fqdn }} mysql connection\n            saddr {{ ipv4.address }} proto tcp dport mysql ACCEPT;\n'
+    state: present
+  notify: Reload delegated ferm
+  delegate_to: '{{ mysql_replication_master }}'
+
+# Allow ferm IPv6 mysql access delegate_to: master_mysql_server
+- name: Allow ferm IPv6 mysql access delegate_to master_mysql_server
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv6 INPUT rules$'
+    line: '\n            # allow {{ ansible_fqdn }} mysql connection\n            saddr {{ ipv6.address }} proto tcp dport mysql ACCEPT;\n'
+    state: present
+  notify: Reload delegated ferm
+  delegate_to: '{{ mysql_replication_master }}'
+
+# flush_handlers to reload remote master ferm immediately
+- name: flush_handlers to reload remote master ferm immediately
+  meta: flush_handlers
+
+# Stop mysql slave
+- name: Stop mysql slave
+  become: yes
+  mysql_replication: 
+     mode: stopslave
+
+# Generate mysql replication user password
+- name: Generate mysql replication user password
+  become: no
+  shell: cat /dev/urandom | tr -dc '[:alnum:]' | head -c 32
+  register: mysql_replication_password
+
+# Add mysql replication user on master, REQUIRESSL, restricted to slave ipv4/ipv6, delegate_to: master_mysql_server
+- name: Add mysql replication user, on master, restricted to slave, REQUIRE SSL
+  become: yes
+  mysql_user:
+    name: '{{ mysql_replication_username }}'
+    priv: '*.*:REQUIRESSL,RELOAD,REPLICATION CLIENT,REPLICATION SLAVE'
+    password: '{{ mysql_replication_password.stdout }}'
+    host: '{{ item }}'
+    state: present
+  with_items:
+   - '{{ ipv4.address }}'
+   - '{{ ipv6.address }}'
+  delegate_to: '{{ mysql_replication_master }}'
+
+# Grant temporary (only for the time of the mysqldump) to mysql replication user on replication databases ALL rights, restricted to slave ipv4/ipv6, delegate_to: master_mysql_server
+- name: Grant temporary to mysql replication user all right, on replication databases, on master, restricted to slave
+  become: yes
+  mysql_user:
+    name: '{{ mysql_replication_username }}'
+    priv: '{{ item[0] }}.*:ALL'
+    host: '{{ item[1] }}'
+    password: '{{ mysql_replication_password.stdout }}'
+    append_privs: yes
+    state: present
+  with_nested:
+   - [ '{{ mysql_replication_databases }}' ]
+   - [ '{{ ipv4.address }}', '{{ ipv6.address }}' ]
+  delegate_to: '{{ mysql_replication_master }}'
+
+- name: Grant temporary to mysql replication user all right, on replication databases, on master, restricted to slave
+  become: yes
+  mysql_user:
+    name: '{{ mysql_replication_username }}'
+    priv: mysql.*:SELECT, LOCK TABLES
+    host: '{{ item }}'
+    password: '{{ mysql_replication_password.stdout }}'
+    append_privs: yes
+    state: present
+  with_items:
+   - '{{ ipv4.address }}'
+   - '{{ ipv6.address }}' 
+  delegate_to: '{{ mysql_replication_master }}'
+
+# Set mysql slave
+- name: Set master
+  become: yes
+  mysql_replication: 
+     mode: changemaster
+     master_host: '{{ mysql_replication_master }}'
+     master_user: '{{ mysql_replication_username }}'
+     master_password: '{{ mysql_replication_password.stdout }}'
+     master_ssl: true
+     master_ssl_ca: '{{ pki_location }}/ca.crt'
+
+
+# Dump => pipe => Load mysql replication databases using the replication user on slave
+- name: Dump => pipe => Load mysql replication databases using the replication user on slave
+  become: yes
+  shell: 'mysqldump --host={{ mysql_replication_master }} --user={{ mysql_replication_username }} --password={{ mysql_replication_password.stdout }} --ssl --add-drop-database --master-data --databases {{ mysql_replication_databases | join(" ")}} | mysql'
+ 
+# Revoke mysql replication user all rights, on replication databases, on master, restricted to slave ipv4/ipv6, delegate_to: master_mysql_server
+- name: Revoke mysql replication user all rights, on replication databases, on master, restricted to slave, delegate_to master_mysql_server
+  become: yes
+  mysql_user:
+    name: '{{ mysql_replication_username }}'
+    priv: '{{ item[0] }}.*:USAGE'
+    password: '{{ mysql_replication_password.stdout }}'
+    host: '{{ item[1] }}'
+    state: present
+  with_nested:
+   - [ '{{ mysql_replication_databases }}' ]
+   - [ '{{ ipv4.address }}', '{{ ipv6.address }}' ]
+  delegate_to: '{{ mysql_replication_master }}'
+  tags: revoke mysql rights
+
+# Add mysql replication user REPLICATION SLAVE privilige on master, delegate_to: master_mysql_server
+- name: Add mysql replication user REPLICATION SLAVE privilige on master, delegate_to master_mysql_server
+  become: yes
+  mysql_user:
+    name: '{{ mysql_replication_username }}'
+    priv: '*.*:REPLICATION SLAVE'
+    password: '{{ mysql_replication_password.stdout }}'
+    host: '{{ item }}'
+    state: present
+  with_items:
+   - '{{ ipv4.address }}'
+   - '{{ ipv6.address }}'
+  delegate_to: '{{ mysql_replication_master }}'
+
+# Start mysql slave
+- name: Start mysql slave
+  become: yes
+  mysql_replication: 
+     mode: startslave
+
+

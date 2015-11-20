@@ -1,0 +1,5 @@
+- include: apt.yml tags=apache
+- include: modules.yml tags=apache
+- include: sites.yml tags=apache
+#- include: ssl.yml tags=apache_ssl
+- include: ferm.yml tags=apache_ferm

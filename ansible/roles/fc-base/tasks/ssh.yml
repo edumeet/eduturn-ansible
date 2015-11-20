@@ -1,0 +1,21 @@
+- name: Disable SSH root login
+  become: yes
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: ^#?PermitRootLogin[ ]
+    line: PermitRootLogin no
+  notify: Restart sshd
+  tags:
+   - ssh
+   - harden
+
+- name: Disallow SSH password authentication
+  become: yes
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: ^#?PasswordAuthentication[ ]
+    line: PasswordAuthentication no
+  notify: Restart sshd
+  tags:
+   - ssh
+   - harden

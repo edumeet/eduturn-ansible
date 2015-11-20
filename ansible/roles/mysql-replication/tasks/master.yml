@@ -1,0 +1,32 @@
+# Config mysql binlog enable
+- name: Config mysql binlog enable
+  become: yes
+  lineinfile:
+    dest: /etc/mysql/my.cnf
+    regexp: '^#(log_bin			= /var/log/mysql/mysql-bin.log)$'
+    line: '\1'
+    state: present
+    backrefs: yes
+  notify: Restart mysql
+
+# Config binlog for replication databases (binlog-do-db)
+- name: Config binlog for replication databases (binlog-do-db)
+  become: yes
+  lineinfile:
+    dest: /etc/mysql/my.cnf
+    insertafter: '^#binlog_do_db		= include_database_name$'
+    line: 'binlog_do_db		= {{ item }}'
+    state: present
+  with_items: '{{ mysql_replication_databases }}'
+  notify: Restart mysql
+
+# Config listen all interfaces
+- name: Config listen all interfaces
+  become: yes
+  lineinfile:
+    dest: /etc/mysql/my.cnf
+    regexp: '^(bind-address		=) 127.0.0.1$'
+    line: '\1 ::'
+    state: present
+    backrefs: yes
+  notify: Restart mysql

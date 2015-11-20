@@ -1,0 +1,31 @@
+# Create mysql_replication_databases
+- name: Create mysql_replication_databases
+  become: yes
+  mysql_db: 
+    name: '{{ item }}'
+    state: present
+  with_items: '{{ mysql_replication_databases }}'
+
+# copy coturn database schema
+- name:  copy coturn database schema
+  copy: 
+    src: '{{ item }}_schema.sql'
+    dest: /tmp
+  with_items: '{{ mysql_replication_databases }}'
+
+# import schema 
+- name: import schema 
+  become: yes
+  mysql_db: 
+    name: '{{ item }}'
+    target: '/tmp/{{ item }}_schema.sql'
+    state: import
+  with_items: '{{ mysql_replication_databases }}'
+  ignore_errors: yes
+
+# remove coturn database schema
+- name: remove coturn database schema
+  file: 
+    path: '/tmp/{{ item }}_schema.sql'
+    state: absent
+  with_items: '{{ mysql_replication_databases }}'

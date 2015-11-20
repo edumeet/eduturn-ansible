@@ -1,0 +1,10 @@
+11,12c11,12
+< 	Order allow,deny
+< 	Allow from all
+---
+> #	Order allow,deny
+> #	Allow from all
+14c14
+< #	Require all granted
+---
+> 	Require all granted

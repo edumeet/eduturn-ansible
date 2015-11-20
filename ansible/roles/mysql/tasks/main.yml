@@ -1,0 +1,5 @@
+- include: apt.yml tags=mysql_apt
+- include: root.yml tags=mysql_root
+- include: ssl.yml tags=mysql_ssl
+- include: reversedns.yml tags=mysql_reversedns
+- include: utf8.yml tags=mysql_utf8

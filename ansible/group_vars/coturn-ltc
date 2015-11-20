@@ -1,0 +1,8 @@
+# coturn
+coturn_mysql_db: coturn-ltc
+coturn_rest: false
+
+# mysql replication
+mysql_replication_databases: 
+ - coturn-ltc
+

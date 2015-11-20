@@ -1,0 +1,23 @@
+- name: Copy cert and key /etc/ssl/certs owner:www-data, group:www-data, mode:0640
+  become: yes
+  copy:
+    src: ../../../host_files/{{ ansible_fqdn }}/ssp/saml.{{ item }}
+    dest: /etc/ssl/certs/saml.{{ item }}
+    owner: www-data
+    group: www-data
+    mode: 0640
+  with_items:
+    - crt
+    - key
+
+- name: Setup certificate
+  become: yes
+  lineinfile:
+    state: present
+    dest: /etc/simplesamlphp/authsources.php
+    insertafter: "^[ ]*//'signature.algorithm'.*$"
+    line: '            "{{ item.name }}" => "{{ item.value }}",'
+  with_items:
+    - { name: 'privatekey', value: 'saml.key' }
+    - { name: 'certificate', value: 'saml.crt' }
+

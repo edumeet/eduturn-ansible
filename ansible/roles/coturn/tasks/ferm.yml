@@ -1,0 +1,94 @@
+# coturn ferm
+
+#IPv4
+- name: Add TURN relay ports
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv4 INPUT rules$'
+    line: '\n            # allow replay media connections\n            proto udp dport 49152:65535 ACCEPT;\n'
+    state: present
+  notify: Reload ferm
+
+- name: Add Alternative TLS STUN/TURN port
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv4 INPUT rules$'
+    line: '\n            # allow Alternative TLS STUN/TURN connection\n            proto (udp tcp) dport 443 ACCEPT;\n'
+    state: present
+  notify: Reload ferm
+
+- name: Add TLS STUN/TURN port
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv4 INPUT rules$'
+    line: '\n            # allow TLS STUN/TURN connection\n            proto (udp tcp) dport 5349 ACCEPT;\n'
+    state: present
+  notify: Reload ferm
+
+- name: Add Alternative STUN/TURN port
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv4 INPUT rules$'
+    line: '\n            # allow Alternative STUN/TURN connection\n            proto (udp tcp) dport 80 ACCEPT;\n'
+    state: present
+  notify: Reload ferm
+
+- name: Add STUN/TURN port
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv4 INPUT rules$'
+    line: '\n            # allow STUN/TLS connection\n            proto (udp tcp) dport 3478 ACCEPT;\n'
+    state: present
+  notify: Reload ferm
+
+#IPv6
+- name: Add TURN relay ports
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv6 INPUT rules$'
+    line: '\n            # allow replay media connections\n            proto udp dport 49152:65535 ACCEPT;\n'
+    state: present
+  notify: Reload ferm
+
+- name: Add Alternative TLS STUN/TURN port
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv6 INPUT rules$'
+    line: '\n            # allow Alternative TLS STUN/TURN connection\n            proto (udp tcp) dport 443 ACCEPT;\n'
+    state: present
+  notify: Reload ferm
+
+- name: Add TLS STUN/TURN port
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv6 INPUT rules$'
+    line: '\n            # allow TLS STUN/TURN connection\n            proto (udp tcp) dport 5349 ACCEPT;\n'
+    state: present
+  notify: Reload ferm
+
+- name: Add Alternative STUN/TURN port
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv6 INPUT rules$'
+    line: '\n            # allow Alternative STUN/TURN connection\n            proto (udp tcp) dport 80 ACCEPT;\n'
+    state: present
+  notify: Reload ferm
+
+- name: Add STUN/TURN port
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv6 INPUT rules$'
+    line: '\n            # allow STUN/TLS connection\n            proto (udp tcp) dport 3478 ACCEPT;\n'
+    state: present
+  notify: Reload ferm
+

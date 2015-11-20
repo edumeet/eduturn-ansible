@@ -1,0 +1,19 @@
+# Allow apache IPv4 access in ferm
+- name: Allow apache IPv4 access in ferm
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv4 INPUT rules$'
+    line: '\n            # allow {{ ansible_fqdn }} apache connection\n            proto tcp dport (http https) ACCEPT;\n'
+    state: present
+  notify: Reload ferm
+
+# Allow apache IPv6 access in ferm
+- name: Allow apache IPv6 access in ferm
+  become: yes
+  lineinfile:
+    dest: /etc/ferm/ferm.conf
+    insertafter: '# Further IPv6 INPUT rules$'
+    line: '\n            # allow {{ ansible_fqdn }} apache connection\n            proto tcp dport (http https) ACCEPT;\n'
+    state: present
+  notify: Reload ferm

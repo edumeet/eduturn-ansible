@@ -1,0 +1,9 @@
+- name: Enable apache2 modules
+  become: yes
+  apache2_module:
+    name: "{{ item }}"
+  with_items:
+   - rewrite
+   - ssl
+   - headers
+   - expires

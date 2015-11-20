@@ -1,0 +1,8 @@
+- name: Install http packages
+  become: yes
+  apt:
+    name: '{{ item }}'
+    state: installed
+  with_items:
+    - apache2
+    - apachetop

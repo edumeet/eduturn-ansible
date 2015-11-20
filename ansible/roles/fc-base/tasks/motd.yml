@@ -1,0 +1,10 @@
+# Revert back debian orginal motd, (replace Fazy Cloud change password reminder motd)
+
+- name: Replace motd
+  become: yes
+  copy:
+    src: motd
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 0644

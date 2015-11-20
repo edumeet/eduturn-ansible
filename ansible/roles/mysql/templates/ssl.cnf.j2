@@ -1,0 +1,15 @@
+[mysqld]
+ssl
+ssl-ca={{ pki_location }}/ca.crt
+ssl-cert={{ pki_location }}/{{ansible_fqdn }}.crt
+ssl-key={{ pki_location }}/{{ansible_fqdn }}.pkcs1.key
+
+[client]
+ssl
+ssl-ca={{ pki_location }}/ca.crt
+
+[mysqldump]
+ssl
+ssl-ca={{ pki_location }}/ca.crt
+
+

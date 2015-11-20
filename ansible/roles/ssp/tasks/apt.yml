@@ -1,0 +1,7 @@
+- name: Install SimpleSAMLphp packages
+  become: yes
+  apt:
+    name: '{{ item }}'
+    state: installed
+  with_items:
+    - simplesamlphp

@@ -1,0 +1,8 @@
+- name: Restart coturn
+  become: yes
+  service:
+    name: coturn
+    state: restarted
+
+- name: update timezone
+  command: dpkg-reconfigure --frontend noninteractive tzdata

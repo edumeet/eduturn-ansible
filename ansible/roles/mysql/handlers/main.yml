@@ -1,0 +1,11 @@
+- name: start mysql
+  become: yes
+  service: 
+    name: mysql 
+    state: started 
+
+- name: restart mysql
+  become: yes
+  service: 
+    name: mysql 
+    state: restarted

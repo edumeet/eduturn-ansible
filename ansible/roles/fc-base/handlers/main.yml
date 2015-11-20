@@ -1,0 +1,22 @@
+- name: Restart sshd
+  become: yes
+  service:
+    name: ssh
+    state: restarted
+
+- name: Restart networking
+  become: yes
+  service:
+    name: networking
+    state: restarted
+
+- name: Reload ferm
+  become: yes
+  service:
+    name: ferm
+    state: reloaded
+
+- name: update timezone
+  become: yes
+  command: dpkg-reconfigure --frontend noninteractive tzdata
+

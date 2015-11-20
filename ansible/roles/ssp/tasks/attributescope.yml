@@ -1,0 +1,24 @@
+# Create attributescope module directory
+- name: Create attributescope module directory
+  become: yes
+  file:
+    state: directory
+    path: /usr/share/simplesamlphp/modules/attributescope
+
+# Clone attributescope from git 
+- name: Clone attributescope from git 
+  become: yes
+  git: 
+    repo: https://github.com/NIIF/simplesamlphp-module-attributescope.git
+    dest: /usr/share/simplesamlphp/modules/attributescope
+    clone: yes
+   
+# Config Attributescope filter module
+- name: Config Attributescope filter module
+  become: yes
+  patch: 
+     dest: /etc/simplesamlphp/config.php
+     src: simplesamlphp-module-attributescope.patch
+  notify:
+    - Restart httpd
+ 
