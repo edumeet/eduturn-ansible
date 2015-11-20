@@ -6,6 +6,8 @@ dns:
  ipv4_domain_name_server1: 158.38.212.107
  ipv4_domain_name_server2: 158.38.0.168
 
+timezone: Europe/Oslo
+
 ipv4:
  address: 158.38.212.166
  netmask: 255.255.254.0
