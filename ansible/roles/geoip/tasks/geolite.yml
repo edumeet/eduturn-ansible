@@ -1,41 +1,49 @@
+- name: Creates directory /usr/local/share/GeoIP
+  become: yes
+  file: 
+    path: /usr/local/share/GeoIP
+    state: directory
+
 # IPv4
-- name: Check if /usr/share/GeoIP/GeoLiteCity.dat exists
+- name: Check if /usr/local/share/GeoIP/GeoLiteCity.dat exists
+  become: yes
   stat: 
-    path: /usr/share/GeoIP/GeoLiteCity.dat
+    path: /usr/local/share/GeoIP/GeoLiteCity.dat
   register: GeoLiteCity
 
 - name: Fetch GeoLiteCity.dat.gz
   become: yes
   get_url:
-    dest: /usr/share/GeoIP/GeoLiteCity.dat.gz
+    dest: /usr/local/share/GeoIP/GeoLiteCity.dat.gz
     url: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
   when: not GeoLiteCity.stat.exists
 
 - name: Unpack GeoLiteCity.dat.gz
   become: yes
-  command: gunzip /usr/share/GeoIP/GeoLiteCity.dat.gz
+  command: gunzip /usr/local/share/GeoIP/GeoLiteCity.dat.gz
   args:
-   chdir: /usr/share/GeoIP
-   creates: /usr/share/GeoIP/GeoLiteCity.dat
+   chdir: /usr/local/share/GeoIP
+   creates: /usr/local/share/GeoIP/GeoLiteCity.dat
   when: not GeoLiteCity.stat.exists
 
 # IPv6
-- name: Check if /usr/share/GeoIP/GeoLiteCityv6.dat exists
+- name: Check if /usr/local/share/GeoIP/GeoLiteCityv6.dat exists
+  become: yes
   stat: 
-    path: /usr/share/GeoIP/GeoLiteCityv6.dat
+    path: /usr/local/share/GeoIP/GeoLiteCityv6.dat
   register: GeoLiteCityv6
 
 - name: Fetch GeoLiteCityv6.dat.gz
   become: yes
   get_url:
-    dest: /usr/share/GeoIP/GeoLiteCityv6.dat.gz
+    dest: /usr/local/share/GeoIP/GeoLiteCityv6.dat.gz
     url: http://geolite.maxmind.com/download/geoip/database/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz
   when: not GeoLiteCityv6.stat.exists
 
 - name: Unpack GeoLiteCityv6.dat.gz
   become: yes
-  command: gunzip /usr/share/GeoIP/GeoLiteCityv6.dat.gz
+  command: gunzip /usr/local/share/GeoIP/GeoLiteCityv6.dat.gz
   args:
-   chdir: /usr/share/GeoIP
-   creates: /usr/share/GeoIP/GeoLiteCityv6.dat 
+   chdir: /usr/local/share/GeoIP
+   creates: /usr/local/share/GeoIP/GeoLiteCityv6.dat 
   when: not GeoLiteCityv6.stat.exists

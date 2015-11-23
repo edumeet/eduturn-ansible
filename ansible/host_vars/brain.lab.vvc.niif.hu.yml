@@ -29,6 +29,7 @@ ssp:
   discoveryurl: http://mdx.eduid.hu/role/idp.ds
   metarefresh:
     - { name: 'edugain', expire: '60*60*24*4', src: 'https://metadata.eduid.hu/current/edugain.xml', fingerprint: 'FE:AE:0B:E8:FB:59:ED:F7:CB:7F:69:DF:19:4F:8B:6D:C7:F6:96:66' }
+    - { name: 'href', expire: '60*60*24*4', src: 'https://metadata.eduid.hu/current/href.xml', fingerprint: 'FE:AE:0B:E8:FB:59:ED:F7:CB:7F:69:DF:19:4F:8B:6D:C7:F6:96:66' }
   technicalcontact:
     name: Mihály Mészáros
     email: misi@niif.hu
