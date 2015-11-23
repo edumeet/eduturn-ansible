@@ -1,0 +1,10 @@
+- name: Install geoip packages
+  become: yes
+  apt:
+    name: '{{ item }}'
+    state: installed
+    update_cache: yes
+  with_items:
+    - geoip-bin
+    - geoip-database
+    - geoip-database-extra

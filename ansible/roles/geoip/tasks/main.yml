@@ -1,0 +1,2 @@
+- include: apt.yml tags=geoip_apt
+- include: geolite.yml tags=geoip_geolite
