@@ -28,3 +28,14 @@
     - bsd-mailx
     - exim4-config
     - exim4
+
+- name: Setup Internet
+  become: yes
+  lineinfile:
+    dest: /etc/exim4/update-exim4.conf.conf
+    regexp: ^dc_eximconfig_configtype='local'$
+    line: dc_eximconfig_configtype='internet'
+
+- name: Update exim4 config
+  become: yes
+  command: /usr/sbin/update-exim4.conf
