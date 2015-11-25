@@ -19,7 +19,6 @@
     state: present
   with_items: '{{ mysql_replication_databases }}'
   notify: Restart mysql
-
 # Config listen all interfaces
 - name: Config listen all interfaces
   become: yes
@@ -30,3 +29,14 @@
     state: present
     backrefs: yes
   notify: Restart mysql
+
+# Config enable events
+- name: Config enable events
+  become: yes
+  lineinfile:
+    dest: /etc/mysql/my.cnf
+    insertafter: '^\[mysqld\]$'
+    line: 'event_scheduler=ON'
+    state: present
+  notify: Restart mysql
+  tags: mysql_events
