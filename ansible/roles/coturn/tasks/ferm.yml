@@ -15,7 +15,7 @@
   lineinfile:
     dest: /etc/ferm/ferm.conf
     insertafter: '# Further IPv4 INPUT rules$'
-    line: '\n            # allow Alternative TLS STUN/TURN connection\n            proto (udp tcp) dport 443 ACCEPT;\n'
+    line: '\n            # allow Alternative TLS STUN/TURN connection\n            proto (udp tcp) dport 5350 ACCEPT;\n'
     state: present
   notify: Reload ferm
 
@@ -33,7 +33,7 @@
   lineinfile:
     dest: /etc/ferm/ferm.conf
     insertafter: '# Further IPv4 INPUT rules$'
-    line: '\n            # allow Alternative STUN/TURN connection\n            proto (udp tcp) dport 80 ACCEPT;\n'
+    line: '\n            # allow Alternative STUN/TURN connection\n            proto (udp tcp) dport 3479 ACCEPT;\n'
     state: present
   notify: Reload ferm
 

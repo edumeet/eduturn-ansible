@@ -41,22 +41,22 @@
   notify: Restart coturn
 
 # alternative ports
-- name: Setup coturn alt-listening-port=80
+- name: Setup coturn alt-listening-port=3479
   become: yes
   lineinfile:
     dest: /etc/turnserver.conf
     regexp: '^#(alt-listening-port)=0$'
-    line: \1=80
+    line: \1=3479
     state: present
     backrefs: yes
   notify: Restart coturn
 
-- name: Setup coturn alt-tls-listening-port=443
+- name: Setup coturn alt-tls-listening-port=5350
   become: yes
   lineinfile:
     dest: /etc/turnserver.conf
     regexp: '^#(alt-tls-listening-port)=0$'
-    line: \1=443
+    line: \1=5350
     state: present
     backrefs: yes
   notify: Restart coturn
