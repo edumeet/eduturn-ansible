@@ -1,9 +1,7 @@
 <?php
-{% for metadata in ssp.metarefresh %}
-$expiretime = {{ metadata.expire }}; 
-
 $config = array(    
 	'sets' => array(
+{% for metadata in ssp.metarefresh %}
     	'{{ metadata.name }}' => array(
 			'cron'		=> array('daily'),
 			'sources'	=> array(
@@ -15,11 +13,11 @@ $config = array(
 						)
 					)
 				),
-			'expireAfter' 		=> $expiretime,
+			'expireAfter' 		=> {{ metadata.expire }},
 			'outputDir' 	=> '/etc/simplesamlphp/metadata/{{ metadata.name }}/',		
 			'outputFormat' => 'flatfile'
 		), //{{ metadata.name }}		
+{% endfor %}
 	) //sets
 );
-{% endfor %}
 ?>
