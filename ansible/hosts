@@ -55,7 +55,7 @@ coturn-rest-5.uninett.no
 brain.lab.vvc.niif.hu 
 
 [coturn]
-193.224.69.58 #ansible
+#193.224.69.58 #ansible
 
 [coturn:children]
 coturn-ltc
