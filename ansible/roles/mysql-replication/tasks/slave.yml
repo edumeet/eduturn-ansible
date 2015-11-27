@@ -19,6 +19,7 @@
     state: present
   notify: Reload delegated ferm
   delegate_to: '{{ mysql_replication_master }}'
+  tags: mysql_replication_ferm
 
 # Allow ferm IPv6 mysql access delegate_to: master_mysql_server
 - name: Allow ferm IPv6 mysql access delegate_to master_mysql_server
@@ -30,6 +31,7 @@
     state: present
   notify: Reload delegated ferm
   delegate_to: '{{ mysql_replication_master }}'
+  tags: mysql_replication_ferm
 
 # flush_handlers to reload remote master ferm immediately
 - name: flush_handlers to reload remote master ferm immediately
