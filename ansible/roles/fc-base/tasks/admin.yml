@@ -16,3 +16,4 @@
   authorized_key: 
     user: admin 
     key: "{{ lookup('file', 'authorized_keys') }}"
+  tags: ssh_authorized_key
