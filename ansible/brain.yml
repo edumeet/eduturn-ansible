@@ -11,3 +11,4 @@
     - { role: php }
     - { role: ssp }
     - { role: composer }
+    - { role: web }

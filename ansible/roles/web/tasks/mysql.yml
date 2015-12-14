@@ -1,0 +1,30 @@
+#Setup mysql web password
+- name: generate mysql_web_password
+  become: no
+  shell: cat /dev/urandom | tr -dc '[:alnum:]' | head -c 32 
+  register: mysql_web_password
+
+- name: update mysql web password
+  become: yes
+  mysql_user: 
+    name: web
+    host: '{{ item }}'
+    password: '{{ mysql_web_password.stdout }}'
+    state: present
+    priv: "coturn-ltc.turnusers_lt:SELECT,INSERT,UPDATE,DELETE/coturn-rest.ip:SELECT/coturn-rest.server:SELECT,UPDATE/coturn-rest.service:SELECT/coturn-rest.turn_secret:SELECT/coturn-rest.token:SELECT,INSERT,UPDATE,DELETE"
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+
+- name: Set .my.cnf for root user
+  become: yes
+  lineinfile: 
+    dest: /var/www/Db.php
+    backrefs: yes
+    regexp: '(.*)secret(.*)'
+    line: '\1{{ mysql_web_password.stdout }}\2'
+    owner: www-data
+    group: www-data
+    mode: 0640
