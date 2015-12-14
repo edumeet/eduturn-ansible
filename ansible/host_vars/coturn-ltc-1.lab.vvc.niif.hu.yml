@@ -1,9 +1,9 @@
 ipv4:
- address: 193.224.69.52
+ address: 193.224.69.14
  netmask: 255.255.255.128
  gateway: 193.224.69.1
 ipv6:
- address: 2001:738:0:501::52
+ address: 2001:738:0:501::14
  netmask: 64
  gateway: 2001:738:0:501::1
 
