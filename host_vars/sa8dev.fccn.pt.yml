@@ -1,25 +1,25 @@
 dns:
-search_domain: fccn.pt
-local_domain: fccn.pt
-ipv6_domain_name_server1: 2001:690:a00:4001::200
-ipv6_domain_name_server2: 2001:690:a80:4001::200
-ipv4_domain_name_server1: 193.136.192.40
-ipv4_domain_name_server2: 193.136.2.228
+ search_domain: fccn.pt
+ local_domain: fccn.pt
+ ipv6_domain_name_server1: 2001:690:a00:4001::100
+ ipv6_domain_name_server2: 2001:690:a80:4001::200
+ ipv4_domain_name_server1: 193.136.192.45
+ ipv4_domain_name_server2: 193.136.192.40
  
 timezone: Europe/Lisbon
  
 ipv4:
-address: 193.136.47.72
-netmask: 255.255.255.128
-gateway: 193.136.47.126
+ address: 193.136.47.72
+ netmask: 255.255.255.128
+ gateway: 193.136.47.126
 ipv6:
-address: 2001:690:a00:4100::72
-netmask: 64
-gateway: fe80::213:7fff:feb2:9880
+ address: 2001:690:a00:4100::72
+ netmask: 64
+ gateway: 2001:690:a00:4100::1
  
 host:
-hostname: sa8dev
-domain: fccn.pt
+ hostname: sa8dev
+ domain: fccn.pt
  
 # mysql
 mysql_server_id: 7
