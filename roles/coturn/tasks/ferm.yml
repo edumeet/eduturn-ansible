@@ -92,3 +92,11 @@
     state: present
   notify: Reload ferm
 
+- name: Apply a patch to redirect ports 80 and 443 on booth IPv4 and IPv6 to standard STUN/TURN ports
+  become: yes
+  patch:
+    src: redirect.patch
+    dest: /etc/ferm/ferm.conf
+  notify: Reload ferm
+  tags: http redirect
+
