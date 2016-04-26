@@ -241,19 +241,19 @@
   notify: Restart coturn
   tags: coturn_harden
 
-# Setup secure-stun
-- name: Setup coturn secure-stun
-  become: yes
-  lineinfile:
-    dest: /etc/turnserver.conf
-    regexp: '^#(secure-stun)$'
-    line: '\1'
-    state: present
-    backrefs: yes
-  notify: Restart coturn
-  tags: 
-    - coturn_harden
-    - prohibit_anonymous_stun
+## Setup secure-stun
+#- name: Setup coturn secure-stun
+#  become: yes
+#  lineinfile:
+#    dest: /etc/turnserver.conf
+#    regexp: '^#(secure-stun)$'
+#    line: '\1'
+#    state: present
+#    backrefs: yes
+#  notify: Restart coturn
+#  tags: 
+#    - coturn_harden
+#    - prohibit_anonymous_stun
 
 
 # CLI config
