@@ -11,3 +11,5 @@
 - include: packages.yml tags=packages
 - include: editor.yml tags=editor
 - include: motd.yml tags=motd
+- include: cron-apt.yml tags=cron-apt
+- include: forward.yml tags=forward

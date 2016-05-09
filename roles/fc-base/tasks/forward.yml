@@ -1,0 +1,7 @@
+# Forward root email
+- name: Forward root email
+  become: yes
+  lineinfile:
+    insertafter: EOF
+    dest: /etc/aliases
+    line: 'root:misi@niif.hu'

@@ -1,0 +1,7 @@
+# Setup email on upgrade
+- name: Setup email on upgrade
+  become: yes
+  lineinfile:
+    insertafter: EOF
+    dest: /etc/cron-apt/config
+    line: 'MAILON="upgrade"'
