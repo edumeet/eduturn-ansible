@@ -18,7 +18,7 @@
     - localhost
 
 
-- name: Set .my.cnf for root user
+- name: Set password
   become: yes
   lineinfile: 
     dest: /var/www/Db.php

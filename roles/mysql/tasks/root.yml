@@ -34,7 +34,7 @@
     dest: /root/.my.cnf
     owner: root
     group: root
-    mode: 600
+    mode: 0600
     backup: no
   when: not mycnf.stat.exists
   tags: mysql root password
