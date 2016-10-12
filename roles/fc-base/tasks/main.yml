@@ -13,3 +13,4 @@
 - include: motd.yml tags=motd
 - include: cron-apt.yml tags=cron-apt
 - include: forward.yml tags=forward
+- include: reboot.yml tags=reboot
