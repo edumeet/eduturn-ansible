@@ -1,0 +1,80 @@
+# install ca-certs
+- name: Install required packages
+  become: yes
+  apt: 
+    name: '{{ item }}'
+    state: latest 
+  with_items:
+   - ca-certificates
+   - openssl
+
+- name: Install certbot from backports
+  become: yes
+  apt: 
+    name: '{{ item }}'
+    state: latest 
+    default_release: jessie-backports
+  with_items:
+   - certbot
+
+# iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+- name: accept temporary https to be able to validate newcert request
+  become: yes
+  shell: 'iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT'
+
+# certbot certonly 
+- name: request cert for first time
+  become: yes
+  shell: 'certbot certonly --standalone --domain {{ ansible_fqdn }} -m {{ letsencrypt_email }} --agree-tos -t -n'
+
+- name: remove previously added accept https to be able to reuqest newcert
+  become: yes
+  shell: 'iptables -D INPUT -p tcp -m tcp --dport 443 -j ACCEPT'
+
+  
+# install cron renew and convert to pkcs1 and after restart all ssl services.
+
+- name: Add group pki
+  become: yes
+  group: 
+    name: '{{ pki_group }}'
+    state: present
+    system: yes
+
+- name: create pki directory
+  become: yes
+  file:
+    path: '{{ pki_location }}'
+    state: directory
+    mode: 0750 
+    owner: root 
+    group: pki
+
+- name: copy letsencrpt certificates and keys
+  become: yes
+  shell: 'cp /etc/letsencrypt/live/{{ ansible_fqdn }}/{{ item.src }} {{ pki_location + "/" + item.dst }}' 
+  with_items:
+   - src: privkey.pem
+     dst: '{{ ansible_fqdn }}.key'
+   - src: cert.pem
+     dst: '{{ ansible_fqdn }}.crt'
+   - src: chain.pem
+     dst: ca.crt
+
+- name: convert pkcs#1 private key
+  become: yes
+  command: openssl rsa -in '{{ pki_location + "/" + ansible_fqdn + ".key" }}' -out '{{ pki_location + "/" + ansible_fqdn + ".pkcs1.key" }}'
+
+- name: Ensure proper file modes for keys
+  become: yes
+  file: 
+    path: '{{ pki_location }}/{{ item.name }}'
+    owner: '{{ item.owner }}'
+    group: '{{ item.group }}'
+    mode: 0640
+  with_items:
+  - { name: '{{ ansible_fqdn }}.pkcs1.key', owner: 'root', group: 'pki' }
+  - { name: '{{ ansible_fqdn }}.key', owner: 'root', group: 'pki' }
+  - { name: '{{ ansible_fqdn }}.crt', owner: 'root', group: 'pki' }
+  - { name: 'ca.crt', owner: 'root', group: 'pki' }
+

@@ -2,7 +2,7 @@
 - hosts: brain
   roles:
     - { role: base }
-    - { role: pki }
+    - { role: letsencrypt }
     - { role: mysql }
     - { role: mysql-replication }
     - { role: coturn }

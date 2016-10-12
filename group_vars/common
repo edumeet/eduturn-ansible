@@ -23,3 +23,7 @@ coturn_default_realm: lab.vvc.niif.hu
 
 #cli and admin password created by turnadmin -P -p <password>
 coturn_admin_password: $5$c281bba83e2929ea$164a19a1737cf30f504970eeedbd41586bb3eae0861726a471b53be84de3be61
+
+#letsencrypt
+letsencrypt_email: stun-devops@listserv.niif.hu
+letencrypt_hook_scripts_directory: /usr/local/sbin

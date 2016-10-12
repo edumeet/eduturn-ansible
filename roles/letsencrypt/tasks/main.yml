@@ -1,0 +1,9 @@
+- stat: path=/etc/letsencrypt/live/{{ansible_fqdn}}/cert.pem
+  become: yes
+  register: letsencrypt_cert
+  tags: letsencrypt-first
+
+- include: first_run.yml tags=letsencrypt-first
+  when: letsencrypt_cert.stat.exists == False
+
+- include: renew.yml

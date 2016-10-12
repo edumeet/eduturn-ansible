@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#make a copy letsencrypt to pki
+cp /etc/letsencrypt/live/{{ ansible_fqdn }}/privkey.pem  {{ pki_location }}/{{ ansible_fqdn }}.key 
+cp /etc/letsencrypt/live/{{ ansible_fqdn }}/cert.pem  {{ pki_location }}/{{ ansible_fqdn }}.crt 
+cp /etc/letsencrypt/live/{{ ansible_fqdn }}/chain.pem  {{ pki_location }}/ca.crt 
+
+# convert priv key ti pkcs1 format for mysql
+openssl rsa -in {{ pki_location }}/{{ ansible_fqdn }}.key -out {{ pki_location }}/{{ ansible_fqdn }}.pkcs1.key 2>/dev/null
+
+# set the right permissions
+chown root:pki /etc/pki/*
+chmod 0640 /etc/pki/*
+
+if [ -x /usr/sbin/apache2 ];
+then
+/bin/systemctl start apache2
+else
+#iptables revert temp https access
+iptables -D INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+
+# revert port forwarding
+iptables -t nat -A PREROUTING -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 5349
+
+# restart coturn
+#There is no other way to reload cert
+[ -x /usr/bin/turnserver ] && /bin/systemctl restart coturn
+fi 
+
+# restart mysql 
+#There is no other way to reload cert
+[ -x /usr/sbin/mysqld ] && /bin/systemctl restart mysql
+

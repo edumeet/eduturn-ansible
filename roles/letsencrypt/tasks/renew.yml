@@ -1,0 +1,25 @@
+#template and copy shell scripts set permissions
+- name: Install letsencrypt renewal hook shell scripts
+  become: yes
+  template:
+    src: '{{ item + ".j2"}}'
+    dest: '{{ letencrypt_hook_scripts_directory + "/" + item }}'
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+     - letsencrypt_renewal_post.sh
+     - letsencrypt_renewal_pre.sh
+  tags: letsencryptcron
+
+#Append hooks to letsencrypt renewal crontab
+- name: Append hooks to letsencrypt renewal crontab
+  become: yes
+  lineinfile:
+    dest: /etc/cron.d/certbot
+    backrefs: yes
+    regexp: '^(.*certbot -q renew)'
+    line: '\1 --pre-hook {{ letencrypt_hook_scripts_directory }}/letsencrypt_renewal_pre.sh --post-hook {{ letencrypt_hook_scripts_directory }}/letsencrypt_renewal_post.sh'
+    owner: root
+    group: root
+    mode: 0644
