@@ -1,3 +1,5 @@
+root_mailforward_email: stun-devops@listserv.niif.hu
+
 dns:
  search_domain: lab.vvc.niif.hu
  local_domain: lab.vvc.niif.hu

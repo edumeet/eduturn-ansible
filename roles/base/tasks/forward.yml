@@ -4,4 +4,4 @@
   lineinfile:
     insertafter: EOF
     dest: /etc/aliases
-    line: 'root:misi@niif.hu'
+    line: 'root:{{ root_mailforward_email }}'
