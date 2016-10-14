@@ -1,5 +1,4 @@
 coturn_mysql_host: localhost
-coturn_default_realm: lab.vvc.niif.hu
 
 # mysql
 mysql_replication_master: brain.lab.vvc.niif.hu

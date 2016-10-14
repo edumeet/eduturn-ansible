@@ -13,6 +13,15 @@
     dest: /tmp
   with_items: '{{ mysql_replication_databases }}'
 
+#add https admin into the imported sql schema
+- name: add https admin into the imported sql schema
+  lineinfile:
+     dest: '/tmp/{{ item }}_schema.sql'
+     state: present    
+     line: 'insert into admin_user (name, realm, password) values ("admin","{{ coturn_default_realm }}","{{ coturn_admin_password }}");'
+     insertafter: EOF
+  with_items: '{{ mysql_replication_databases }}'
+
 # import schema 
 - name: import schema 
   become: yes

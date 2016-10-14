@@ -53,3 +53,4 @@ CREATE TABLE admin_user (
 	password varchar(127),
 	primary key (name)
 );
+
