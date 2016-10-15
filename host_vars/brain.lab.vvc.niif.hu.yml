@@ -22,7 +22,7 @@ mysql_replication_databases:
 
 # apache
 sites:
-  - { name: '{{ ansible_fqdn }}', serveradmin_email: misi@niif.hu }
+  - { name: '{{ ansible_fqdn }}', serveradmin_email: '{{ root_mailforward_email }}' }
 
 # simplesamlphp
 ssp:
@@ -32,4 +32,4 @@ ssp:
     - { name: 'href', expire: '60*60*24*4', src: 'https://metadata.eduid.hu/current/href.xml', fingerprint: 'FE:AE:0B:E8:FB:59:ED:F7:CB:7F:69:DF:19:4F:8B:6D:C7:F6:96:66' }
   technicalcontact:
     name: Mihály Mészáros
-    email: misi@niif.hu
+    email: '{{ root_mailforward_email }}'
