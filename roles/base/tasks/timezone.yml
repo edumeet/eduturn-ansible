@@ -1,4 +1,5 @@
 - name: Set timezone
+  become: yes
   template:
     src: timezone.j2
     dest: /etc/timezone
