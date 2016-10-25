@@ -1,3 +1,8 @@
+- name: last prompt before reboot
+  pause: 
+    prompt: "Make a last config check before reboot!!! \nPress any key to reboot or \"<ctrl>-c a\" to abbort!!! "
+  tags: test
+ 
 - name: restart machine
   shell: sleep 2 && shutdown -r now "After basic setup ansible reboot triggered"
   async: 1
