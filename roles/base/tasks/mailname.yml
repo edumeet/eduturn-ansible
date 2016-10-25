@@ -14,6 +14,10 @@
     dest: /etc/mailname
     regexp: ^.*$
     line: "{{ host.hostname }}.{{ host.domain }}"
+    create: yes
+    owner: root
+    group: root
+    mode: 0644
 
 # Re-install exim4-config
 - name: Re-install exim4-config
