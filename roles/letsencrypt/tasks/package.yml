@@ -1,0 +1,33 @@
+# install ca-certs
+- name: Install required packages
+  become: yes
+  apt: 
+    name: '{{ item }}'
+    state: latest 
+  with_items:
+   - ca-certificates
+   - openssl
+
+- name: Add Debian Jessie Backports
+  become: yes
+  apt_repository:
+    repo: 'deb http://http.debian.net/debian jessie-backports main'
+    state: present
+
+- name: Add Debian Jessie Backports Source
+  become: yes
+  apt_repository:
+    repo: 'deb-src http://http.debian.net/debian jessie-backports main'
+    state: present
+    update_cache: yes
+
+- name: Install certbot package
+  become: yes
+  apt:
+    name: certbot
+    default_release: jessie-backports 
+    force: yes
+    update_cache: yes
+    state: latest
+
+

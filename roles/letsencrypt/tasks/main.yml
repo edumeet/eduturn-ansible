@@ -3,6 +3,8 @@
   register: letsencrypt_cert
   tags: letsencrypt-first
 
+- include: package.yml tags=letsencrypt-first
+  when: letsencrypt_cert.stat.exists == False
 - include: first_run.yml tags=letsencrypt-first
   when: letsencrypt_cert.stat.exists == False
 
