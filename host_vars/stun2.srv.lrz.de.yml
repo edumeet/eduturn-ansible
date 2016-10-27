@@ -1,0 +1,25 @@
+dns:
+ search_domain: lrz.de srv.lrz.de srv.mwn.de ws.lrz.de
+ local_domain: srv.lrz.de
+ ipv6_domain_name_server1: 2001:4ca0::53:1
+ ipv6_domain_name_server2: 2001:4ca0::53:2
+ ipv4_domain_name_server1: 10.156.33.53
+ ipv4_domain_name_server2: 129.187.5.1
+
+timezone: Europe/Berlin
+
+ipv4:
+ address: 129.187.255.99
+ netmask: 255.255.255.0
+ gateway: 129.187.255.254
+ipv6:
+ address: 2001:4ca0:0:103::129.187.255.99
+ netmask: 64
+ gateway: 2001:4ca0:0:103::1
+
+host:
+ hostname: stun2
+ domain: srv.lrz.de
+
+# mysql
+mysql_server_id: 10
