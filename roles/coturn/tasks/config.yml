@@ -288,7 +288,7 @@
   lineinfile:
     dest: /etc/turnserver.conf
     regexp: '^#(cli-password=)qwerty$'
-    line: '\1{{coturn_admin_password}'
+    line: '\1{{coturn_admin_password}}'
     state: present
     backrefs: yes
   notify: Restart coturn
