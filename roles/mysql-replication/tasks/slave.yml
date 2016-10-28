@@ -15,7 +15,7 @@
   lineinfile:
     dest: /etc/ferm/ferm.conf
     insertafter: '# Further IPv4 INPUT rules$'
-    line: '            # allow {{ ansible_fqdn }} mysql connection\n            saddr {{ ipv4.address }} proto tcp dport mysql ACCEPT;\n'
+    line: "            # allow {{ ansible_fqdn }} mysql connection\n            saddr {{ ipv4.address }} proto tcp dport mysql ACCEPT;\n"
     state: present
   notify: Reload delegated ferm
   delegate_to: '{{ mysql_replication_master }}'
@@ -27,7 +27,7 @@
   lineinfile:
     dest: /etc/ferm/ferm.conf
     insertafter: '# Further IPv6 INPUT rules$'
-    line: '            # allow {{ ansible_fqdn }} mysql connection\n            saddr {{ ipv6.address }} proto tcp dport mysql ACCEPT;\n'
+    line: "            # allow {{ ansible_fqdn }} mysql connection\n            saddr {{ ipv6.address }} proto tcp dport mysql ACCEPT;\n"
     state: present
   notify: Reload delegated ferm
   delegate_to: '{{ mysql_replication_master }}'
@@ -82,7 +82,7 @@
   become: yes
   mysql_user:
     name: '{{ mysql_replication_username }}'
-    priv: mysql.*:SELECT, LOCK TABLES
+    priv: 'mysql.*:SELECT,LOCK TABLES'
     host: '{{ item }}'
     password: '{{ mysql_replication_password.stdout }}'
     append_privs: yes
