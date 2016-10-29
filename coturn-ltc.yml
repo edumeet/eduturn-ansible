@@ -8,3 +8,4 @@
     - { role: mysql }
     - { role: mysql-replication }
     - { role: coturn }
+    - { role: munin }

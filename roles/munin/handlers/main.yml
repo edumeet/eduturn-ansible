@@ -1,0 +1,12 @@
+- name: Restart munin-node
+  become: yes
+  service:
+    name: munin-node
+    state: restarted
+
+- name: Reload ferm
+  become: yes
+  service:
+    name: ferm
+    state: reloaded
+

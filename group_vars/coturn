@@ -6,3 +6,8 @@ mysql_replication_role: slave
 
 mysql_replication_username: "{{ host.hostname }}"
 coturn_mysql_user: "coturn"
+
+# munin
+munin_master_fqdn: brain.lab.vvc.niif.hu
+munin_master_ipv4_regex: ^193\.224\.69\.71$
+munin_master_ipv6_regex: ^2001:738:0:501::71$
