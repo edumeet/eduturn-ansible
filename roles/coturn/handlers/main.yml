@@ -10,6 +10,3 @@
     name: ferm
     state: reloaded
 
-
-- name: update timezone
-  command: dpkg-reconfigure --frontend noninteractive tzdata
