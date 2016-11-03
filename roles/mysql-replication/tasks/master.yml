@@ -19,6 +19,7 @@
     state: present
   with_items: '{{ mysql_replication_databases }}'
   notify: Restart mysql
+
 # Config listen all interfaces
 - name: Config listen all interfaces
   become: yes
