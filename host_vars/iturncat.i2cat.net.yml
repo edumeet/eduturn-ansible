@@ -1,0 +1,25 @@
+dns:
+ search_domain: i2cat.net
+ local_domain: i2cat.net
+ ipv6_domain_name_server1: 2620:0:ccc::2
+ ipv6_domain_name_server2: 2620:0:ccd::2
+ ipv4_domain_name_server1: 8.8.8.8
+ ipv4_domain_name_server2: 8.8.4.4
+ 
+timezone: Europe/Madrid
+ 
+ipv4:
+ address: 84.88.34.26
+ netmask: 255.255.255.0
+ gateway: 84.88.34.1
+ipv6:
+ address: 2001:40b0:7fff:1001::3 
+ netmask: 64
+ gateway: 2001:40b0:7fff:1001::1
+ 
+host:
+ hostname: iturncat
+ domain: i2cat.net
+ 
+# mysql
+mysql_server_id: 8
