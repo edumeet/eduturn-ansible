@@ -47,6 +47,7 @@
 [coturn-ltc]
 coturn-ltc-[1:2].lab.vvc.niif.hu 
 stun1.srv.lrz.de
+turn1.man.poznan.pl
 
 [coturn-rest]
 coturn-rest-[3:4].lab.vvc.niif.hu
@@ -54,6 +55,7 @@ coturn-rest-5.uninett.no
 sa8dev.fccn.pt
 stun2.srv.lrz.de
 iturncat.i2cat.net
+turn2.man.poznan.pl
 
 [brain]
 brain.lab.vvc.niif.hu 
