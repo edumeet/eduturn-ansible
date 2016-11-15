@@ -1,6 +1,6 @@
 # Update interfaces
 
-- name: Setup networking
+- name: Setup networking in etc interfaces
   become: yes
   template:
     src: interfaces.j2
