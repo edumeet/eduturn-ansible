@@ -9,11 +9,11 @@ dns:
 timezone: Europe/Madrid
  
 ipv4:
- address: 84.88.34.26
- netmask: 255.255.255.0
- gateway: 84.88.34.1
+ address: 84.88.39.236
+ netmask: 255.255.255.248
+ gateway: 84.88.39.233
 ipv6:
- address: 2001:40b0:7fff:1001::3 
+ address: 2001:40b0:7fff:1001::4 
  netmask: 64
  gateway: 2001:40b0:7fff:1001::1
  
