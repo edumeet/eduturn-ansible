@@ -11,7 +11,7 @@
     host: '{{ item }}'
     password: '{{ mysql_web_password.stdout }}'
     state: present
-    priv: "coturn-ltc.turnusers_lt:SELECT,INSERT,UPDATE,DELETE/coturn-rest.ip:SELECT/coturn-rest.server:SELECT,UPDATE/coturn-rest.service:SELECT/coturn-rest.turn_secret:SELECT/coturn-rest.token:SELECT,INSERT,UPDATE,DELETE"
+    priv: "coturn-ltc.turnusers_lt:SELECT,INSERT,UPDATE,DELETE/coturn-ltc.ip:SELECT/coturn-ltc.server:SELECT,UPDATE/coturn-rest.ip:SELECT/coturn-rest.server:SELECT,UPDATE/coturn-rest.service:SELECT/coturn-rest.turn_secret:SELECT/coturn-rest.token:SELECT,INSERT,UPDATE,DELETE"
   with_items:
     - 127.0.0.1
     - ::1
