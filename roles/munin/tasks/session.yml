@@ -1,0 +1,38 @@
+- name: Install expect for munin plugin telnet interaction
+  become: yes
+  apt:
+    name: expect
+    state: installed
+  tags: munin-session
+
+- name: Configure coturn session munin plugin
+  become: yes
+  template:
+    src: turnsession.j2
+    dest: /usr/share/munin/plugins/turnsession
+    owner: root
+    group: root
+    mode: 0755
+  notify: Restart munin-node
+  tags: munin-session
+
+#todo to prevent run more than once
+- name: Configure coturn session munin plugin
+  become: yes
+  lineinfile:
+    insertafter: EOF
+    dest: /etc/munin/plugin-conf.d/munin-node
+    line: "\n[turnsession]\nuser root\n"
+  notify: Restart munin-node
+  tags: munin-session
+
+- name: Configure coturn session munin plugin
+  become: yes
+  file: 
+    src: /usr/share/munin/plugins/turnsession
+    dest: /etc/munin/plugins/turnsession
+    owner: root 
+    group: root 
+    state: link
+  notify: Restart munin-node
+  tags: munin-session

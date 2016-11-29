@@ -2,6 +2,11 @@
 - hosts: coturn-rest
   vars: 
     coturn_rest: true  
+  vars_prompt:
+    - name: "coturn_cli_password"
+      prompt: "Enter coturn cli-password:"
+      private: yes
+      confirm: yes
   roles:
     - { role: base }
     - { role: letsencrypt }

@@ -1,0 +1,61 @@
+#!/bin/bash
+
+PASSWORD="{{ coturn_cli_password }}"
+
+# -*- sh -*-
+
+: << =cut
+
+=head1 NAME
+
+turn - Plugin to monitor the turn server test probe.
+
+=head1 CONFIGURATION
+
+=cut
+
+# If run with the "config"-parameter, give out information on how the
+# graphs should look.
+
+if [ "$1" = "config" ]; then
+     cat <<EOF
+graph_title TURN session
+graph_vlabel Session Count
+total.label Total Session
+total.warning :25
+total.critical :50
+real.label Total Session - monitoring Sessions
+real.warning :15
+real.critical :30
+EOF
+    # Last, if run with the "config"-parameter, quit here (don't
+    # display any data)
+    exit 0
+fi
+
+# If not run with any parameters at all (or only unknown ones), do the
+# real work - i.e. display the data. Almost always this will be
+# "value" subfield for every data field.
+
+TMP=/var/turnps.txt
+/usr/bin/expect<<EOM
+log_user 0
+set timeout 5
+
+spawn telnet localhost 5766
+
+expect "Enter password:"
+send "$PASSWORD\r"
+expect ">"
+send "psd $TMP\r";
+expect ">"
+send "quit\r";
+EOM
+
+TOTAL=`grep "Total sessions: " $TMP | awk '{print $3}'`
+MUNIN=`cat $TMP | grep -c "<munin>"`
+let REAL="$TOTAL - $MUNIN"
+echo "total.value "$TOTAL
+echo "real.value "$REAL
+
+rm $TMP
