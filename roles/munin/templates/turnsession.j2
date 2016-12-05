@@ -20,11 +20,11 @@ turn - Plugin to monitor the turn server test probe.
 if [ "$1" = "config" ]; then
      cat <<EOF
 graph_title TURN session
-graph_vlabel Session Count
+graph_vlabel Actual Session Count
 total.label Total Session
-total.warning :25
-total.critical :50
-real.label Total Session - monitoring Sessions
+total.warning 0:25
+total.critical 0:50
+real.label Real Session
 real.warning :15
 real.critical :30
 EOF
@@ -53,7 +53,7 @@ send "quit\r";
 EOM
 
 TOTAL=`grep "Total sessions: " $TMP | awk '{print $3}'`
-MUNIN=`cat $TMP | grep -c "<munin>"`
+MUNIN=`cat $TMP | grep -c "munin>"`
 let REAL="$TOTAL - $MUNIN"
 echo "total.value "$TOTAL
 echo "real.value "$REAL

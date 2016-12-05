@@ -6,7 +6,7 @@
     - name: "coturn_cli_password"
       prompt: "Enter coturn cli-password:"
       private: yes
-      confirm: yes
+      confirm: no
   roles:
     - { role: base }
     - { role: letsencrypt }
