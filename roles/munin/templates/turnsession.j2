@@ -37,12 +37,12 @@ fi
 # real work - i.e. display the data. Almost always this will be
 # "value" subfield for every data field.
 
-TMP=/var/turnps.txt
+TMP=/var/tmp/turnps.txt
 /usr/bin/expect<<EOM
 log_user 0
 set timeout 5
 
-spawn telnet localhost 5766
+spawn telnet ::1 5766
 
 expect "Enter password:"
 send "$PASSWORD\r"
