@@ -18,7 +18,7 @@ ipv6:
  gateway: 2001:b68:ff:8::1
  
 host:
- hostname: gn4webrtc3
+ hostname: gn4webrtc-stun
  domain: carnet.hr
 
 # mysql

@@ -48,7 +48,7 @@
 coturn-ltc-[1:2].lab.vvc.niif.hu 
 stun1.srv.lrz.de
 turn1.man.poznan.pl
-gn4webrtc3.carnet.hr
+gn4webrtc-stun.carnet.hr
 
 [coturn-rest]
 coturn-rest-[3:4].lab.vvc.niif.hu
