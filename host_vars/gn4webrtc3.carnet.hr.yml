@@ -1,0 +1,25 @@
+dns:
+ search_domain: carnet.hr
+ local_domain: carnet.hr
+ ipv6_domain_name_server1: 2620:0:ccc::2
+ ipv6_domain_name_server2: 2620:0:ccd::2
+ ipv4_domain_name_server1: 161.53.160.3
+ ipv4_domain_name_server2: 161.53.123.3
+ 
+timezone: Europe/Zagreb
+ 
+ipv4:
+ address: 193.198.203.132
+ netmask: 255.255.255.240
+ gateway: 193.198.203.129
+ipv6:
+ address: 2001:b68:ff:8::132
+ netmask: 64
+ gateway: 2001:b68:ff:8::1
+ 
+host:
+ hostname: gn4webrtc3
+ domain: carnet.hr
+
+# mysql
+mysql_server_id: 13

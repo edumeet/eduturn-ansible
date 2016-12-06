@@ -6,7 +6,7 @@
 #   - Blank lines are ignored
 #   - Groups of hosts are delimited by [header] elements
 #   - You can enter hostnames or ip addresses
-#   - A hostname/ip can be a member of multiple groups
+#   - A hostname//p can be a member of multiple groups
 
 # Ex 1: Ungrouped hosts, specify before any group headers.
 
@@ -48,6 +48,7 @@
 coturn-ltc-[1:2].lab.vvc.niif.hu 
 stun1.srv.lrz.de
 turn1.man.poznan.pl
+gn4webrtc3.carnet.hr
 
 [coturn-rest]
 coturn-rest-[3:4].lab.vvc.niif.hu
