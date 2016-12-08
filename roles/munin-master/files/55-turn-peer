@@ -1,0 +1,8 @@
+domain (ip ip6) {
+    table filter {
+        chain INPUT {
+             # turn peer service
+             proto udp dport 3480:3481 ACCEPT;
+        }
+    }
+}

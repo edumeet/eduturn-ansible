@@ -1,0 +1,5 @@
+- name: Restart ferm
+  become: yes
+  service:
+    name: ferm
+    state: restarted
