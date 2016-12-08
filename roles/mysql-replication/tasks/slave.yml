@@ -9,32 +9,22 @@
   with_items: '{{ mysql_replication_databases }}'
   notify: Restart mysql
 
-# Allow ferm IPv4 mysql access delegate_to: master_mysql_server
-- name: Allow ferm IPv4 mysql access delegate_to master_mysql_server
+# Allow ferm mysql access delegate_to: master_mysql_server
+- name: Allow ferm mysql access delegate_to master_mysql_server
   become: yes
-  lineinfile:
-    dest: /etc/ferm/ferm.conf
-    insertafter: '# Further IPv4 INPUT rules$'
-    line: "            # allow {{ ansible_fqdn }} mysql connection\n            saddr {{ ipv4.address }} proto tcp dport mysql ACCEPT;\n"
-    state: present
-  notify: Reload delegated ferm
+  template:
+    src: ferm-{{ item }}.j2
+    dest: /etc/ferm/ferm.d/{{ item }}-{{ ansible_fqdn}}
+    owner: root
+    group: root
+    mode: 0640
+  notify: Restart delegated ferm
+  with_items: 55-mysql-replication
   delegate_to: '{{ mysql_replication_master }}'
-  tags: mysql_replication_ferm
+  tags: ferm
 
-# Allow ferm IPv6 mysql access delegate_to: master_mysql_server
-- name: Allow ferm IPv6 mysql access delegate_to master_mysql_server
-  become: yes
-  lineinfile:
-    dest: /etc/ferm/ferm.conf
-    insertafter: '# Further IPv6 INPUT rules$'
-    line: "            # allow {{ ansible_fqdn }} mysql connection\n            saddr {{ ipv6.address }} proto tcp dport mysql ACCEPT;\n"
-    state: present
-  notify: Reload delegated ferm
-  delegate_to: '{{ mysql_replication_master }}'
-  tags: mysql_replication_ferm
-
-# flush_handlers to reload remote master ferm immediately
-- name: flush_handlers to reload remote master ferm immediately
+# flush_handlers to restart remote master ferm immediately
+- name: flush_handlers to restart remote master ferm immediately
   meta: flush_handlers
 
 # Stop mysql slave

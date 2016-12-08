@@ -4,9 +4,9 @@
     name: munin-node
     state: restarted
 
-- name: Reload ferm
+- name: Restart ferm
   become: yes
   service:
     name: ferm
-    state: reloaded
+    state: restarted
 

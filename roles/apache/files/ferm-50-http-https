@@ -1,0 +1,6 @@
+domain (ip ip6) table filter {
+    chain INPUT {
+        # allow http https connection
+        proto tcp dport (http https) ACCEPT;
+    }
+}

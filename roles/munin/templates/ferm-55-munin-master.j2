@@ -1,0 +1,6 @@
+domain (ip ipv6) table filter {
+    chain INPUT {
+        # allow {{ ansible_fqdn }} munin connection
+        saddr {{ munin_master_fqdn }} proto tcp dport munin ACCEPT;
+    }
+}

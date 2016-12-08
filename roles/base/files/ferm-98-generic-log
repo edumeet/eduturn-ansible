@@ -1,0 +1,6 @@
+domain (ip ip6) table filter {
+    chain INPUT {
+        # Firewall logging template
+        mod limit limit 3/min limit-burst 10 LOG log-prefix "IN-rejected: " log-level debug;
+    }
+}

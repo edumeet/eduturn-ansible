@@ -1,0 +1,13 @@
+domain (ip ip6) table filter {
+    chain INPUT {
+        policy DROP;
+        REJECT;      
+    }
+    chain OUTPUT {
+        policy ACCEPT;
+    }
+    chain FORWARD { 
+        policy DROP;
+        REJECT;
+    }
+}

@@ -24,24 +24,18 @@
     state: present
   notify: Restart munin-node
 
-- name: Add allow munin port from munin-master on IPv4
+- name: Allow munin port from munin-master in ferm
   become: yes
-  lineinfile:
-    dest: /etc/ferm/ferm.conf
-    line: "\n            # allow munin from connection\n            saddr {{ munin_master_fqdn }} proto tcp dport munin ACCEPT;\n"
-    insertafter: '# Further IPv4 INPUT rules$'
-    state: present
-  notify: Reload ferm
-
-- name: Add allow munin port from munin-master on IPv6
-  become: yes
-  lineinfile:
-    dest: /etc/ferm/ferm.conf
-    line: "\n            # allow munin from connection\n            saddr {{ munin_master_fqdn }} proto tcp dport munin ACCEPT;\n"
-    insertafter: '# Further IPv6 INPUT rules$'
-    state: present
-  notify: Reload ferm
-
+  template: 
+    src: ferm-{{ item }}.j2
+    dest: /etc/ferm/ferm.d/{{ item }}
+    owner: root
+    group: root
+    mode: 0640
+  notify: Restart ferm
+  with_items:
+    - 55-munin-master
+  tags: ferm
 
 - name: insert client into munin-master config 
   become: yes

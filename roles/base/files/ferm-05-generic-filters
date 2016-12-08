@@ -1,0 +1,20 @@
+domain (ip ip6) table filter {
+    chain INPUT {
+        # established
+        mod conntrack ctstate INVALID DROP;
+        mod conntrack ctstate (ESTABLISHED RELATED) ACCEPT;
+
+        # local
+        interface lo ACCEPT;
+
+        # ICMP 
+        proto icmp ACCEPT;
+
+        #NEW
+        mod conntrack ctstate NEW {
+            # SSH 
+            proto tcp dport ssh ACCEPT;
+
+       }
+    }
+}

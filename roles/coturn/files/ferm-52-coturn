@@ -1,0 +1,27 @@
+domain (ip ip6) {
+    table filter {
+        chain INPUT {
+            # allow replay media connections
+            proto udp dport 49152:65535 ACCEPT;
+    
+            # allow Alternative TLS STUN/TURN connection
+            proto (udp tcp) dport 5350 ACCEPT;
+    
+            # allow TLS STUN/TURN connection
+            proto (udp tcp) dport 5349 ACCEPT;
+    
+            # allow Alternative STUN/TURN connection
+            proto (udp tcp) dport 3479 ACCEPT;
+    
+            # allow STUN/TLS connection
+            proto (udp tcp) dport 3478 ACCEPT;
+        }
+    }
+    table nat {
+        chain PREROUTING {
+            policy ACCEPT;
+            # Redirect ports 80 and 443 to standard STUN/TURN ports
+            proto (udp tcp) dport 80 REDIRECT to-ports 3478;
+            proto (udp tcp) dport 443 REDIRECT to-ports 5349;
+    }
+}

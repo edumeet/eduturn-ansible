@@ -5,15 +5,42 @@
   apt:
     name: ferm
     state: installed
+  tags: ferm
 
-- name: Setup basic ferm.conf
+- name: ferm.d config directory
   become: yes
-  template:
-    src: ferm.conf.j2
-    dest: /etc/ferm/ferm.conf
+  file: 
+    state: directory 
+    path: '/etc/ferm/ferm.d' 
+    owner: root 
+    group: root 
+    mode: 0750
+  tags: ferm
+
+- name: copy new ferm.conf
+  become: yes
+  copy: 
+    src: ferm.conf 
+    dest: /etc/ferm/ferm.conf 
     owner: root
     group: root
-    mode: 0644
-  notify: Reload ferm
+    mode: 0640
+  notify: Restart ferm
+  tags: ferm
 
+- name: copy firewall config
+  become: yes
+  copy: 
+    src: ferm-{{ item }} 
+    dest: /etc/ferm/ferm.d/{{ item }}
+    owner: root
+    group: root
+    mode: 0640
+  notify: Restart ferm
+  with_items:
+    - 05-generic-filters
+    - 98-generic-log
+    - 99-generic-finish
+  tags: ferm
 
+- meta: flush_handlers
