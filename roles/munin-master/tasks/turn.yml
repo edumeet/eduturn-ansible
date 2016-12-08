@@ -3,6 +3,10 @@
   apt:
     name: coturn
     state: installed
+<<<<<<< HEAD
+=======
+  tags: ferm
+>>>>>>> 2377934b74eaf8163e94c4221200ebc6655454dc
 
 - name: Allow turn peer in firewall config
   become: yes
@@ -13,14 +17,29 @@
     group: root
     mode: 0640
   notify: Restart ferm
+<<<<<<< HEAD
   with_items: 55-turn-peer
+=======
+  with_items: 55-turn-peers
+  tags: ferm
+>>>>>>> 2377934b74eaf8163e94c4221200ebc6655454dc
 
 - name: Copy munin monitoring munin
   become: yes
   copy: 
+<<<<<<< HEAD
     src: "{{ item }}"
+=======
+    src: {{ item }}
+>>>>>>> 2377934b74eaf8163e94c4221200ebc6655454dc
     dest: /usr/share/munin/plugins/{{ item }}
     owner: root
     group: root
     mode: 0755
   with_items: turn
+<<<<<<< HEAD
+=======
+  tags: ferm
+
+
+>>>>>>> 2377934b74eaf8163e94c4221200ebc6655454dc
