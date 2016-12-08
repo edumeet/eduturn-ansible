@@ -1,0 +1,94 @@
+#!/bin/bash
+# -*- sh -*-
+
+: << =cut
+
+=head1 NAME
+
+turn - Plugin to monitor the turn server test probe.
+
+=head1 CONFIGURATION
+
+=cut
+
+# If run with the "config"-parameter, give out information on how the
+# graphs should look.
+FQDN=$(echo $0| cut -d'_' -f 3)
+AUTH=$(echo $0| cut -d'_' -f 2)
+IPv4=`host -t A $FQDN | grep "has address" | awk -F"has address " '{print $2}'`
+IPv6=`host -t AAAA $FQDN | grep "has IPv6 address" | awk -F"has IPv6 address " '{print $2}'`
+
+if [ "$1" = "config" ]; then
+
+    for IP_VERSION in v4 v6
+    do
+    	echo 'multigraph delay_jitter_'$IP_VERSION'_'${IPv4//./_}
+            echo 'graph_title Delay&Jitter IP'$IP_VERSION' '$FQDN
+            echo 'turn-delay.label Average round trip delay'
+            echo 'turn-delay.warning :200'
+            echo 'turn-delay.critical :250'
+            echo 'turn-jitter.label Average jitter'
+            echo 'turn-jitter.warning :20'
+            echo 'turn-jitter.critical :30'
+            echo 'graph_vlabel ms'
+        echo '' 
+    	echo 'multigraph transmit_time_'$IP_VERSION'_'${IPv4//./_}
+            echo 'graph_title Total transmit time IP'$IP_VERSION' '$FQDN
+            echo 'turn-length.label Total transmit time'
+            echo 'turn-length.warning :15'
+            echo 'turn-length.critical :30'
+            echo 'graph_vlabel s'
+        echo '' 
+    	echo 'multigraph lost_dropped_'$IP_VERSION'_'${IPv4//./_}
+            echo 'graph_title Total lost or dropped IP'$IP_VERSION' '$FQDN
+            echo 'turn-lost.label Total lost packets'
+            echo 'turn-lost.warning :1'
+            echo 'turn-lost.critical :2'
+            echo 'turn-dropped.label Total send dropped'
+            echo 'turn-dropped.warning :1'
+            echo 'turn-dropped.critical :2'
+            echo 'graph_vlabel packet'
+       echo '' 
+    done
+
+    # Last, if run with the "config"-parameter, quit here (don't
+    # display any data)
+    exit 0
+fi
+
+# If not run with any parameters at all (or only unknown ones), do the
+# real work - i.e. display the data. Almost always this will be
+# "value" subfield for every data field.
+LTC_PASSWORD=""
+REST_SHARED_SECRET=""
+PEER_IP=""
+for IP_VERSION in v4 v6
+do
+    IP_VAR=IP${IP_VERSION}
+    case $AUTH in
+        rest)
+            out=$(timeout 30 turnutils_uclient -e $PEER_IP -r 3480 -u munin -W $REST_SHARED_SECRET ${!IP_VAR})
+            ;;
+        ltc)
+            out=$(timeout 30 turnutils_uclient -e $PEER_IP -r 3480 -u munin -w $LTC_PASSWORD ${!IP_VAR})
+    esac
+
+    echo 'multigraph delay_jitter_'$IP_VERSION'_'${IPv4//./_}
+    echo -n "turn-delay.value "
+    echo $out | sed -r -n 's/.*Average round trip delay ([0-9.]+) .*$/\1/gp'
+    echo -n "turn-jitter.value "
+    echo $out | sed -r -n 's/.*Average jitter ([0-9.]+) .*$/\1/gp'
+    echo ''
+    echo 'multigraph transmit_time_'$IP_VERSION'_'${IPv4//./_}
+    echo -n "turn-length.value "
+    echo $out | sed -r -n 's/.*Total transmit time is ([0-9]+) .*$/\1/gp'
+    echo ''
+    echo 'multigraph lost_dropped_'$IP_VERSION'_'${IPv4//./_}
+    echo -n "turn-lost.value "
+    echo $out | sed -r -n 's/.*Total lost packets ([0-9]+) .*$/\1/gp'
+    echo -n "turn-dropped.value "
+    echo $out | sed -r -n 's/.*total send dropped ([0-9]+) .*$/\1/gp'
+    
+    echo ''
+done
+

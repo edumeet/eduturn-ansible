@@ -12,3 +12,4 @@
     - { role: ssp }
     - { role: composer }
     - { role: web }
+    - { role: munin-master }

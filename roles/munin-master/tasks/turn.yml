@@ -1,0 +1,31 @@
+- name: Install coturn 
+  become: yes
+  apt:
+    name: coturn
+    state: installed
+  tags: ferm
+
+- name: Allow turn peer in firewall config
+  become: yes
+  copy: 
+    src: ferm-{{ item }}
+    dest: /etc/ferm/ferm.d/{{ item }}
+    owner: root
+    group: root
+    mode: 0640
+  notify: Restart ferm
+  with_items: 55-turn-peers
+  tags: ferm
+
+- name: Copy munin monitoring munin
+  become: yes
+  copy: 
+    src: {{ item }}
+    dest: /usr/share/munin/plugins/{{ item }}
+    owner: root
+    group: root
+    mode: 0755
+  with_items: turn
+  tags: ferm
+
+
