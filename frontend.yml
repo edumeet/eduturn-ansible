@@ -1,5 +1,5 @@
 ---
-- hosts: brain
+- hosts: frontend
   roles:
     - { role: base }
     - { role: letsencrypt }

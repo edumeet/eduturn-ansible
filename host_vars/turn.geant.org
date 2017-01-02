@@ -1,0 +1,25 @@
+ipv4:
+ address: 193.224.22.100
+ netmask: 255.255.255.0
+ gateway: 193.224.22.254
+ipv6:
+ address: 2001:738:0:519:f816:3eff:fe26:4ea2
+ netmask: 64
+ gateway: 2001:738:0:519::1
+
+host:
+ hostname: turn
+ domain: geant.org
+
+# mysql
+mysql_server_id: 1
+mysql_replication_role: master
+
+# mysql_replication
+mysql_replication_databases: 
+ - coturn-ltc 
+ - coturn-rest
+
+# apache
+sites:
+  - { name: '{{ ansible_fqdn }}', serveradmin_email: '{{ root_mailforward_email }}' }

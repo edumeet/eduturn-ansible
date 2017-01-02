@@ -59,8 +59,9 @@ iturncat.i2cat.net
 turn2.man.poznan.pl
 gn4webrtc-stun2.carnet.hr
 
-[brain]
+[frontend]
 brain.lab.vvc.niif.hu 
+turn.geant.org
 
 [coturn]
 #193.224.69.58 #ansible
@@ -71,6 +72,6 @@ coturn-rest
 
 [common:children]
 coturn
-brain
+frontend
 
 [common]
