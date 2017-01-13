@@ -1,0 +1,22 @@
+ipv4:
+ address: 193.224.22.112
+ netmask: 255.255.255.0
+ gateway: 193.224.22.254
+ipv6:
+ address: 2001:738:0:519:f816:3eff:fe4d:18e4
+ netmask: 64
+ gateway: 2001:738:0:519::1
+
+host:
+ hostname: front
+ domain: turn.geant.org
+
+# apache
+site:
+  name: '{{ host.domain }}'
+  serveradmin_email: '{{ root_mailforward_email }}'
+  doc_root: front
+
+shib_discovery_url: https://mdx.eduid.hu/role/idp.ds
+
+letsencrypt_extra_domain: turn.geant.org
