@@ -21,8 +21,10 @@ mysql_replication_databases:
  - coturn-rest
 
 # apache
-sites:
-  - { name: '{{ ansible_fqdn }}', serveradmin_email: '{{ root_mailforward_email }}' }
+site: 
+  name: '{{ ansible_fqdn }}'
+  serveradmin_email: '{{ root_mailforward_email }}'
+  doc_root: 'front'
 
 # simplesamlphp
 ssp:
