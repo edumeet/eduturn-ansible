@@ -2,3 +2,8 @@
   become: yes
   service: name=apache2
            state=restarted
+
+- name: Restart ferm
+  become: yes
+  service: name=ferm
+           state=restarted
