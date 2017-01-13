@@ -1,0 +1,13 @@
+DELIMITER ;;
+CREATE EVENT `clean_token` ON SCHEDULE EVERY 1 YEAR STARTS '2015-01-01 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
+DELETE FROM `token` where created + INTERVAL 2 YEAR > NOW();
+END ;;
+
+DELIMITER ;;
+CREATE EVENT `SharedSecret` ON SCHEDULE EVERY 1 DAY STARTS '2015-11-25 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
+    DECLARE secret VARCHAR(42);
+    SELECT SUBSTR(CONCAT(MD5(RAND()),MD5(RAND())),1,64) INTO secret;
+    INSERT INTO `turn_secret` (`realm`,`value`) VALUES ('lab.vvc.niif.hu',secret);
+    DELETE FROM `turn_secret` where realm='lab.vvc.niif.hu' and timestamp + INTERVAL 1 DAY < NOW();
+END ;;
+DELIMITER ;
