@@ -1,40 +1,82 @@
 # Create mysql_replication_databases
 - name: Create mysql_replication_databases
   become: yes
-  mysql_db: 
+  mysql_db:
     name: '{{ item }}'
     state: present
   with_items: '{{ mysql_replication_databases }}'
 
 # copy coturn database schema
 - name:  copy coturn database schema
-  copy: 
+  copy:
     src: '{{ item }}_schema.sql'
     dest: /tmp
   with_items: '{{ mysql_replication_databases }}'
 
-#add https admin into the imported sql schema
+# copy coturn database schema
+- name:  copy coturn database inventory schema
+  copy:
+    src: '{{ item }}_schema.sql'
+    dest: /tmp
+  with_items:
+    - inventory
+    - token
+    - events
+
+# add https admin into the imported sql schema
 - name: add https admin into the imported sql schema
   lineinfile:
      dest: '/tmp/{{ item }}_schema.sql'
-     state: present    
+     state: present
      line: 'insert into admin_user (name, realm, password) values ("admin","{{ coturn_default_realm }}","{{ coturn_admin_password }}");'
      insertafter: EOF
   with_items: '{{ mysql_replication_databases }}'
 
-# import schema 
-- name: import schema 
+# import schema
+- name: import schema
   become: yes
-  mysql_db: 
+  mysql_db:
     name: '{{ item }}'
     target: '/tmp/{{ item }}_schema.sql'
     state: import
   with_items: '{{ mysql_replication_databases }}'
   ignore_errors: yes
 
+# import inventory to all db
+- name: import inventory to all db
+  become: yes
+  mysql_db:
+    name: '{{ item }}'
+    target: '/tmp/inventory_schema.sql'
+    state: import
+  with_items: '{{ mysql_replication_databases }}'
+  ignore_errors: yes
+
+# import extra to rest db
+- name: import extra schemas to coturn-rest db
+  become: yes
+  mysql_db:
+    name: coturn-rest
+    target: '/tmp/{{ item }}_schema.sql'
+    state: import
+  with_items:
+    - token
+    - events
+  ignore_errors: yes
+
 # remove coturn database schema
 - name: remove coturn database schema
-  file: 
+  file:
     path: '/tmp/{{ item }}_schema.sql'
     state: absent
   with_items: '{{ mysql_replication_databases }}'
+
+# remove coturn database schema
+- name: remove coturn inventory database schema
+  file:
+    path: '/tmp/{{ item }}_schema.sql'
+    state: absent
+  with_items:
+    - inventory
+    - token
+    - events
