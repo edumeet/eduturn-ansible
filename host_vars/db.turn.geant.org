@@ -1,0 +1,21 @@
+ipv4:
+ address: 193.224.22.113
+ netmask: 255.255.255.0
+ gateway: 193.224.22.254
+ipv6:
+ address: 2001:738:0:519:f816:3eff:fed1:3114
+ netmask: 64
+ gateway: 2001:738:0:519::1
+
+host:
+ hostname: db
+ domain: turn.geant.org
+
+# mysql
+mysql_server_id: 1
+mysql_replication_role: master
+
+# mysql_replication
+mysql_replication_databases: 
+ - coturn-ltc 
+ - coturn-rest
