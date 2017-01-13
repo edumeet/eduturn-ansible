@@ -14,13 +14,13 @@
     group: root
     mode: 0640
   notify: Restart ferm
-  with_items: 55-turn-peers
+  with_items: 55-turn-peer
   tags: ferm
 
 - name: Copy munin monitoring munin
   become: yes
   copy: 
-    src: {{ item }}
+    src: "{{ item }}"
     dest: /usr/share/munin/plugins/{{ item }}
     owner: root
     group: root
