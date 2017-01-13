@@ -59,9 +59,23 @@ iturncat.i2cat.net
 turn2.man.poznan.pl
 gn4webrtc-stun2.carnet.hr
 
-[frontend]
-brain.lab.vvc.niif.hu 
-turn.geant.org
+[front]
+front.turn.geant.org
+
+[db]
+db.turn.geant.org
+
+[api]
+api.turn.geant.org
+
+[monitor]
+monitor.turn.geant.org
+
+[c4e-geant:children]
+front
+api
+db
+monitor 
 
 [coturn]
 #193.224.69.58 #ansible
@@ -72,6 +86,7 @@ coturn-rest
 
 [common:children]
 coturn
-frontend
+c4e-geant
 
 [common]
+brain.lab.vvc.niif.hu 
