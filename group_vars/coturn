@@ -1,13 +1,12 @@
 coturn_mysql_host: localhost
 
 # mysql
-mysql_replication_master: brain.lab.vvc.niif.hu
 mysql_replication_role: slave
 
 mysql_replication_username: "{{ host.hostname }}"
 coturn_mysql_user: "coturn"
 
 # munin
-munin_master_fqdn: brain.lab.vvc.niif.hu
-munin_master_ipv4_regex: ^193\.224\.69\.71$
-munin_master_ipv6_regex: ^2001:738:0:501::71$
+munin_master_fqdn: monitor.turn.geant.org
+munin_master_ipv4_regex: ^193\.224\.22\.116$
+munin_master_ipv6_regex: ^2001:738:0:519:f816:3eff:fee8:184a$
