@@ -1,0 +1,119 @@
+- name: Install apache2 shibboleth module
+  become: yes
+  apt: 
+    name: libapache2-mod-shib2
+    state: installed
+
+- name: Enable apache2 shibboleth modul
+  become: yes
+  apache2_module: 
+      name: shib2
+      state: present
+  ignore_errors: yes
+  notify: Restart httpd
+
+- name: Check if shibboleth2.xml upload is needed
+  become: yes
+  shell: "[ -f /etc/shibboleth/sp-key.pem ] && echo 'Yes' || echo ''"
+  register: shibboleth_configured
+
+- name: Create self-signed SSL cert
+  become: yes
+  command: 'openssl req -new -nodes -x509 -subj "/C=HU/ST=Budapest/L=Budapest/O=NIIF/CN={{ site.name }}/emailAddress=stun-devops@listserv.niif.hu " -days 3650 -keyout /etc/shibboleth/sp-key.pem -out /etc/shibboleth/sp-cert.pem'
+  args:
+    creates: /etc/shibboleth/sp-key.pem
+
+- name: Replace config shibboleth2.xml ApplicationDefaults
+  become: yes
+  replace:
+    dest: /etc/shibboleth/shibboleth2.xml
+    regexp: '^([ \t\n\r\f\v]*<ApplicationDefaults entityID="https://)sp.example.org(/shibboleth")'
+    replace: '\1{{ site.name }}\2'
+  when:  (not shibboleth_configured.stdout)
+  notify: Restart shibd
+
+- name: Replace config shibboleth2.xml SSO discoveryProtocol
+  become: yes
+  replace:
+    dest: /etc/shibboleth/shibboleth2.xml
+    regexp: '^([ \t\n\r\f\v]*<SSO )entityID="https://idp.example.org/idp/shibboleth"\n[ \t\n\r\f\v]*(discoveryProtocol="SAMLDS" discoveryURL=")https://ds.example.org/DS/WAYF(">\n[ \t\n\r\f\v]*SAML2) SAML1'
+    replace: '\1\2{{shib_discovery_url}}\3'
+  when:  (not shibboleth_configured.stdout)
+  notify: Restart shibd
+
+- name: Replace config shibboleth2.xml supportContact email
+  become: yes
+  replace:
+    dest: /etc/shibboleth/shibboleth2.xml
+    regexp: '^([ \t\n\r\f\v]*<Errors supportContact=")root@localhost(")$'
+    replace: '\1{{root_mailforward_email}}\2'
+  when:  (not shibboleth_configured.stdout)
+  notify: Restart shibd
+
+- name: Replace config shibboleth2.xml Sessions handlerSSL cookieProps
+  become: yes
+  replace:
+    dest: /etc/shibboleth/shibboleth2.xml
+    regexp: '^([ \t\n\r\f\v]*checkAddress="false" handlerSSL=")false(" cookieProps=")http(">)$'
+    replace: '\1true\2https\3'
+  when:  (not shibboleth_configured.stdout)
+  notify: Restart shibd
+
+# Configure Shiboleth SP
+#- name: Download eduGAIN federation metadata signing certificate
+#  become: yes
+#  get_url: url=https://technical.edugain.org/mds-2014.cer
+#           dest=/etc/shibboleth/edugain-metadata-signer-2014.crt
+
+- name: Download MDX metadata signing certificate
+  become: yes
+  get_url: url=https://metadata.eduid.hu/2011/mdx-test-signer-2015.crt
+           dest=/etc/shibboleth/mdx-test-signer-2015.crt
+
+
+#- name: Add config shibboleth2.xml MetadataProvider
+#  become: yes
+#  lineinfile:
+#    dest: /etc/shibboleth/shibboleth2.xml
+#    insertbefore: '^[ \t\n\r\f\v]*<!-- Example of remotely supplied batch of signed metadata. -->$'
+#    line: "        <MetadataProvider type=\"XML\" uri=\"http://mds.edugain.org\"\n              backingFilePath=\"edugain-metadata.xml\" reloadInterval=\"7200\">\n            <MetadataFilter type=\"RequireValidUntil\" maxValidityInterval=\"2419200\"/>\n            <MetadataFilter type=\"Signature\" certificate=\"edugain-metadata-signer-2014.crt\"/>\n        </MetadataProvider>\n"
+#  when:  (not shibboleth_configured.stdout)
+#  notify: Restart shibd
+
+- name: Add config shibboleth2.xml MetadataProvider
+  become: yes
+  lineinfile:
+    dest: /etc/shibboleth/shibboleth2.xml
+    insertbefore: '^[ \t\n\r\f\v]*<!-- Example of remotely supplied batch of signed metadata. -->$'
+    line: "        <MetadataProvider type=\"Dynamic\" ignoreTransport=\"true\"n>\n            <Subst>http://mdx.eduid.hu/entities/$entityID</Subst>\n            <MetadataFilter type=\"Signature\" certificate=\"mdx-test-signer-2015.crt\"/>\n        </MetadataProvider>\n"
+  when:  (not shibboleth_configured.stdout)
+  notify: Restart shibd
+
+
+- name: Add config shibboleth2.xml RequestMapper
+  become: yes
+  lineinfile:
+    dest: /etc/shibboleth/shibboleth2.xml
+    insertbefore: '^[ \t\n\r\f\v]*<!-- The ApplicationDefaults element is where most of Shibboleth.*$'
+    line: "    <RequestMapper type=\"Native\">        <RequestMap applicationId=\"default\">\n            <Host name=\"{{ site.name }}\" authType=\"shibboleth\" requireSession=\"false\">\n               <Path name=\"secure\" authType=\"shibboleth\" requireSession=\"true\"/>\n           </Host>\n       </RequestMap>\n    </RequestMapper>\n"
+  when:  (not shibboleth_configured.stdout)
+  notify: Restart shibd
+
+- name: Add config /etc/apache2/sites-enabled/{{site.name}}.conf
+  become: yes
+  lineinfile:
+    dest: /etc/apache2/sites-enabled/{{site.name}}.conf
+    insertbefore: '^[ \t\n\r\f\v]*</VirtualHost>$'
+    line: "                <Location />\n                    AuthType Shibboleth\n                    ShibRequireSession Off\n                    ShibUseHeaders On\n                    require shibboleth\n                </Location>\n\n                <Location /secure>\n                    AuthType shibboleth\n                    ShibRequireSession On\n                    require valid-user\n                    ShibUseHeaders On\n                    require shibboleth\n                </Location>\n\n"
+  when:  (not shibboleth_configured.stdout)
+  notify: Restart httpd
+
+- name: Add attribute map for Displayname and email
+  become: yes
+  lineinfile:
+   dest: /etc/shibboleth/attribute-map.xml
+   insertbefore: "^</Attributes>$" 
+   line: "    <Attribute name=\"urn:oid:2.16.840.1.113730.3.1.241\" id=\"displayName\"/>\n    <Attribute name=\"urn:oid:0.9.2342.19200300.100.1.3\" id=\"mail\"/>"
+#  when:  (not shibboleth_configured.stdout)
+  notify: Restart shibd
+

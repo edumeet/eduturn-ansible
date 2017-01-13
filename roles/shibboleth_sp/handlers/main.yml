@@ -1,0 +1,9 @@
+- name: Restart shibd
+  become: yes
+  service: name=shibd
+           state=restarted
+
+- name: Restart httpd
+  become: yes
+  service: name=apache2
+           state=restarted
