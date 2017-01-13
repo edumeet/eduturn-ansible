@@ -1,0 +1,7 @@
+---
+- hosts: monitor
+  roles:
+    - { role: base }
+    - { role: letsencrypt }
+    - { role: apache }
+    - { role: munin-master }

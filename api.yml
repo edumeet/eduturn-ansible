@@ -1,0 +1,10 @@
+---
+- hosts: api
+  roles:
+    - { role: base }
+    - { role: letsencrypt }
+    - { role: apache }
+    - { role: geoip }
+    - { role: php }
+    - { role: composer }
+    - { role: turn-rest-api }

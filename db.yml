@@ -1,0 +1,8 @@
+---
+- hosts: db
+  roles:
+    - { role: base }
+    - { role: letsencrypt }
+    - { role: mysql }
+    - { role: mysql-replication }
+    - { role: coturn }
