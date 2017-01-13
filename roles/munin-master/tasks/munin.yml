@@ -1,0 +1,17 @@
+
+- name: Install munin 
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: installed
+  with_items: 
+    - munin
+    - munin-node
+
+- name: Replace localhost.localdomain with local FQDN
+  become: yes
+  replace:
+    dest: /etc/munin/munin.conf 
+    regexp: '^(\[)localhost.localdomain(\])$'
+    replace: '\1{{ ansible_fqdn }}\2'
+
