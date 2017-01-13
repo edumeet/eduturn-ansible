@@ -27,3 +27,9 @@ coturn_admin_password: $5$c281bba83e2929ea$164a19a1737cf30f504970eeedbd41586bb3e
 #letsencrypt
 letsencrypt_email: stun-devops@listserv.niif.hu
 letencrypt_hook_scripts_directory: /usr/local/sbin
+
+#monitor
+monitor_host: monitor.turn.geant.org
+
+#mysql master
+mysql_replication_master: db.turn.geant.org
