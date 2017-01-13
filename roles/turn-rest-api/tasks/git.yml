@@ -1,0 +1,15 @@
+# checkout web from git
+- name: git clone restapi
+  become: yes
+  git: 
+    repo: "https://github.com/misi/stun-api.git"
+    dest: /var/www/api
+    force: yes
+
+- name: composer update
+  become: yes
+  command: composer update
+  args:
+    chdir: /var/www/api
+
+   

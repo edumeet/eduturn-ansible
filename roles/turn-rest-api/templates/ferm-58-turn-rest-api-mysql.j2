@@ -1,0 +1,13 @@
+domain ip table filter {
+    chain INPUT {
+        # allow {{ ansible_fqdn }} mysql connection
+        saddr {{ ipv4.address }} proto tcp dport mysql ACCEPT;
+    }
+}
+
+domain ip6 table filter {
+    chain INPUT {
+        # allow {{ ansible_fqdn }} mysql connection
+        saddr {{ ipv6.address }} proto tcp dport mysql ACCEPT;
+    }
+}

@@ -1,0 +1,6 @@
+- name: Restart delegated ferm
+  become: yes
+  service:
+    name: ferm
+    state: restarted
+  delegate_to: '{{ mysql_replication_master }}'
