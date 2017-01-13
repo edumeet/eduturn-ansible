@@ -1,15 +1,11 @@
 ---
-- hosts: frontend
+- hosts: front
   roles:
     - { role: base }
     - { role: letsencrypt }
-    - { role: mysql }
-    - { role: mysql-replication }
-    - { role: coturn }
     - { role: apache }
     - { role: geoip }
     - { role: php }
-    - { role: ssp }
+    - { role: shibboleth_sp }
     - { role: composer }
-    - { role: web }
-    - { role: munin-master }
+    - { role: front }
