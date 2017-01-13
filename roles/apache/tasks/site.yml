@@ -1,20 +1,18 @@
-# Add sites and enable
+# Add site and enable
 - name: Configure site
   become: yes
   template:
     src: site.j2
-    dest: "/etc/apache2/sites-available/{{ item.name }}.conf"
+    dest: "/etc/apache2/sites-available/{{ site.name }}.conf"
     owner: root
     group: root
     mode: 0644
     backup: yes
-  with_items: sites
 
 
-- name: Enable sites
+- name: Enable site
   become: yes
-  command: a2ensite {{ item.name }}
-  with_items: sites
+  command: a2ensite {{ site.name }}
   notify:
     - Restart httpd
 
