@@ -1,5 +1,12 @@
-- name: Restart ferm
+- name: Restart munin-node
   become: yes
   service:
-    name: ferm
+    name: munin-node
     state: restarted
+
+- name: Restart httpd
+  become: yes
+  service:
+    name: apache2
+    state: restarted
+
