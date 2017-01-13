@@ -1,0 +1,17 @@
+- name: Allow front ferm mysql access delegate_to master_mysql_server
+  become: yes
+  template:
+    src: ferm-{{ item }}.j2
+    dest: /etc/ferm/ferm.d/{{ item }}-{{ ansible_fqdn}}
+    owner: root
+    group: root
+    mode: 0640
+  notify: Restart delegated ferm
+  with_items: 58-front-mysql
+  delegate_to: '{{ mysql_replication_master }}'
+  tags: ferm
+
+# flush_handlers to restart remote master ferm immediately
+- name: flush_handlers to restart remote master ferm immediately
+  meta: flush_handlers
+

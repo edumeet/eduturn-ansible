@@ -1,0 +1,14 @@
+# checkout web from git
+- name: git clone web
+  become: yes
+  git: 
+    repo: "https://github.com/misi/stun-web.git"
+    dest: /var/www/front
+    force: yes
+
+- name: composer update
+  become: yes
+  command: composer update
+  args:
+    chdir: /var/www/front
+
