@@ -1,22 +1,20 @@
 <VirtualHost *:80>
-    ServerName {{  item.name }}
-    ServerAlias www.{{  item.name }}
+    ServerName {{  site.name }}
     RewriteEngine   On
     RewriteCond %{SERVER_PORT} !^443$
     RewriteRule ^/(.*) https://%{HTTP_HOST}/$1 [NC,R=301,L]
 </VirtualHost>
 <IfModule mod_ssl.c>
 	<VirtualHost *:443>
-                ServerName {{  item.name }}
-                ServerAlias www.{{  item.name }}
-                ServerAdmin {{ item.serveradmin_email }} 
+                ServerName {{  site.name }}
+                ServerAdmin {{ site.serveradmin_email }} 
 
 		#TODO
-                #UseCanonicalName on
+                UseCanonicalName on
                 #SSLOptions +StdEnvVars +ExportCertData
 
 
-		DocumentRoot /var/www
+		DocumentRoot /var/www/{{ site.doc_root }}
 
 		# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
 		# error, crit, alert, emerg.
@@ -144,7 +142,7 @@
 		# MSIE 7 and older should be able to use keepalive
 		BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
 
-                <Directory /var/www>
+                <Directory /var/www/{{ site.doc_root }}>
                     Options Indexes FollowSymLinks MultiViews
                     Allow from all
                     AllowOverride All
