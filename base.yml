@@ -1,0 +1,9 @@
+---
+- hosts: 
+   - monitor
+   - front
+   - api
+  roles:
+    - { role: letsencrypt }
+    - { role: letsencrypt }
+
