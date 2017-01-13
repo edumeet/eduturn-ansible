@@ -1,0 +1,10 @@
+- name: Add config /etc/apache2/sites-enabled/{{ site.name }}.conf
+  become: yes
+  lineinfile:
+    dest: /etc/apache2/sites-enabled/{{ site.name }}.conf
+    insertbefore: '^[ \t\n\r\f\v]*</VirtualHost>$'
+    line: "                <Location /munin>\n                    AuthType shibboleth\n                    ShibRequireSession On\n                    require valid-user\n                    ShibUseHeaders On\n                    require shibboleth\n                </Location>\n\n"
+  when:  (not shibboleth_configured.stdout)
+  notify: Restart httpd
+
+
