@@ -1,19 +1,17 @@
 - name: add apache domain alias to http
   become: yes
-  lineinfile:  
+  lineinfile:
     dest: /etc/apache2/sites-enabled/{{ site.name }}.conf
     regexp: "^    ServerAlias {{ ansible_fqdn }}"
-    insertafter: "^    ServerName turn.geant.org\n$"
+    insertafter: "^    ServerName {{ site.name }}\n$"
     line: "    ServerAlias {{ ansible_fqdn }}"
   notify: Restart httpd
- 
+
 - name: add apache domain alias to https
   become: yes
-  lineinfile:  
+  lineinfile:
     dest: /etc/apache2/sites-enabled/{{ site.name }}.conf
     regexp: "^                ServerAlias {{ ansible_fqdn }}"
     inserteafter: "^                ServerName {{ site.name }}\n$"
     line: "                ServerAlias {{ ansible_fqdn }}"
   notify: Restart httpd
- 
-
