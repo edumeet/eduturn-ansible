@@ -1,13 +1,16 @@
-- name: Install coturn 
+- name: Install coturn package
   become: yes
   apt:
     name: coturn
-    state: installed
+    default_release: jessie-backports
+    force: yes
+    update_cache: yes
+    state: latest
   tags: ferm
 
 - name: Allow turn peer in firewall config
   become: yes
-  copy: 
+  copy:
     src: ferm-{{ item }}
     dest: /etc/ferm/ferm.d/{{ item }}
     owner: root
@@ -19,7 +22,7 @@
 
 - name: Copy munin monitoring munin
   become: yes
-  copy: 
+  copy:
     src: "{{ item }}"
     dest: /usr/share/munin/plugins/{{ item }}
     owner: root
@@ -27,4 +30,3 @@
     mode: 0755
   with_items: turn
   tags: ferm
-
