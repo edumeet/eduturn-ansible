@@ -61,6 +61,7 @@ gn4webrtc-stun2.carnet.hr
 
 [front]
 front.turn.geant.org
+brain.lab.vvc.niif.hu 
 
 [db]
 db.turn.geant.org
@@ -89,4 +90,3 @@ coturn
 c4e-geant
 
 [common]
-brain.lab.vvc.niif.hu 
