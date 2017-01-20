@@ -1,0 +1,13 @@
+- name: Create /var/www/monitor
+  become: yes
+  file:
+    path: /var/www/monitor
+    state: directory
+
+- name: Copy redirect index.html
+  become: yes
+  copy:
+    src: "{{ item }}"
+    dest: "/var/www/monitor/{{ item }}" 
+  with_items: 
+    - index.html
