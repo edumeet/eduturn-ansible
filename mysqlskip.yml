@@ -1,0 +1,23 @@
+---
+- hosts: 
+   - coturn-rest
+  tasks:
+  - name: get slave
+    become: yes
+    mysql_replication:
+      mode: getslave
+  - name: stop slave
+    become: yes
+    mysql_replication:
+      mode: stopslave
+  - name: ignore
+    become: yes
+    command: "mysql -e 'SET GLOBAL sql_slave_skip_counter = 1'"
+  - name: start slave
+    become: yes
+    mysql_replication:
+      mode: startslave
+  - name: get slave
+    become: yes
+    mysql_replication:
+      mode: getslave
