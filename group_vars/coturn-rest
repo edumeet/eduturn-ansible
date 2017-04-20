@@ -1,4 +1,4 @@
-# cotrun
+# coturn
 coturn_mysql_db: coturn-rest
 coturn_rest: true
 

@@ -12,7 +12,7 @@
   register: coturn_mysql_password
 
 # Add mysql coturn and set password grant all rights to coturn db
-- name: Add coturn user to mysql and (set password, require ssl, to db cotrun)
+- name: Add coturn user to mysql and (set password, require ssl, to db coturn)
   become: yes
   mysql_user:
     name: '{{ coturn_mysql_user }}'
