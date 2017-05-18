@@ -2,6 +2,8 @@ CREATE TABLE `server` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `fqdn` varchar(255) DEFAULT NULL,
   `organization` varchar(255) DEFAULT NULL,
+  `latitude` double DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -10,8 +12,6 @@ CREATE TABLE `ip` (
   `server_id` bigint(20) unsigned NOT NULL,
   `ip` varchar(45) NOT NULL COMMENT 'IPv4/IPv6',
   `ipv6` tinyint(1) NOT NULL,
-  `latitude` double DEFAULT NULL,
-  `longitude` double DEFAULT NULL,
   `preference` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ip` (`ip`),
