@@ -9,8 +9,10 @@ else
 
 # add temp https access
 iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT;
+ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT;
 
 #remove port forwarding
 iptables -t nat -D PREROUTING -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 5349
+ip6tables -t nat -D PREROUTING -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 5349
 
 fi

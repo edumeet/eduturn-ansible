@@ -18,9 +18,11 @@ then
 else
 #iptables revert temp https access
 iptables -D INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+ip6tables -D INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 
 # revert port forwarding
-iptables -t nat -A PREROUTING -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 5349
+iptables -D INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+ip6tables -t nat -A PREROUTING -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 5349
 
 # restart coturn
 #There is no other way to reload cert
