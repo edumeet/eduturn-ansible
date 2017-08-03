@@ -7,6 +7,7 @@ CREATE TABLE turnusers_lt (
         eppn varchar(128),
         email varchar(128),
         displayname varchar(60),
+        description varchar(256),
         primary key (id),
         key (realm,name)
 );
