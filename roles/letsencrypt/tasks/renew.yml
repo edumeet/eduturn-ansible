@@ -23,3 +23,24 @@
     owner: root
     group: root
     mode: 0644
+
+#Append hooks to letsencrypt renewal crontab
+- name: Append hooks to letsencrypt renewal systemd
+  become: yes
+  lineinfile:
+    dest: /lib/systemd/system/certbot.service
+    backrefs: yes
+    regexp: '^(.*certbot -q renew)'
+    line: '\1 --pre-hook {{ letencrypt_hook_scripts_directory }}/letsencrypt_renewal_pre.sh --post-hook {{ letencrypt_hook_scripts_directory }}/letsencrypt_renewal_post.sh'
+    owner: root
+    group: root
+    mode: 0644
+  tags: letsencryptsystemd
+
+#
+- name: Reload systemd daemon-reload
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: cron
+  tags: letsencryptsystemd
