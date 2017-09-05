@@ -37,7 +37,7 @@
     mode: 0644
   tags: letsencryptsystemd
 
-#
+# reload systemd config due to the previous modification, we use cron only placeholder
 - name: Reload systemd daemon-reload
   systemd:
     state: started
