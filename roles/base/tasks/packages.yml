@@ -28,6 +28,7 @@
    - cron-apt
    - git
    - make
+   - needrestart
   tags:
    - basic-packages
 
