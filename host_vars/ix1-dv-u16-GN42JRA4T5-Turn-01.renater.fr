@@ -1,0 +1,25 @@
+dns:
+ search_domain: renater.fr
+ local_domain: renater.fr
+ ipv6_domain_name_server1: 2001:660:3001:4002::2
+ ipv6_domain_name_server2: 2001:660:3001:4002::9
+ ipv4_domain_name_server1: 193.49.159.2
+ ipv4_domain_name_server2: 193.49.159.9
+
+timezone: Europe/Paris
+
+ipv4:
+ address: 195.98.238.28
+ netmask: 255.255.255.224
+ gateway: 195.98.238.31
+ipv6:
+ address: 2001:660:3001:4003::28
+ netmask: 64
+ gateway: 2001:660:3001:4003::1
+
+host:
+ hostname: ix1-dv-u16-GN42JRA4T5-Turn-01
+ domain: renater.fr
+
+# mysql
+mysql_server_id: 15
