@@ -61,6 +61,30 @@
     backrefs: yes
   notify: Restart coturn
 
+# relay ip
+- name: Setup coturn IPv4 relay-ip
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(relay-ip)=172.17.19.105$'
+    line: '\1={{ ipv4.address }}'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+  tags: relay-ip
+
+- name: Setup coturn IPv6 relay-ip
+  become: yes
+  lineinfile:
+    dest: /etc/turnserver.conf
+    regexp: '^#(relay-ip)=2607:f0d0:1002:51::5$'
+    line: '\1i={{ ipv6.address }}'
+    state: present
+    backrefs: yes
+  notify: Restart coturn
+  tags: relay-ip
+
+
 # media relay ports
 - name: Setup coturn udp min-port=49152
   become: yes
