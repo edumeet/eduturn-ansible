@@ -39,6 +39,7 @@
 
 # reload systemd config due to the previous modification, we use cron only placeholder
 - name: Reload systemd daemon-reload
+  become: yes
   systemd:
     state: started
     daemon_reload: yes
