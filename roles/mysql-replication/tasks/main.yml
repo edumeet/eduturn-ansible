@@ -1,6 +1,6 @@
-- include: common.yml tags=mysql_replication_common
-- include: master.yml tags=mysql_replication_master
+- import_tasks: my_cnf.yml
+- import_tasks: common.yml
+- import_tasks: master.yml
   when: mysql_replication_role == "master"
-- include: slave.yml tags=mysql_replication_slave 
+- import_tasks: slave.yml
   when: mysql_replication_role == "slave"
-

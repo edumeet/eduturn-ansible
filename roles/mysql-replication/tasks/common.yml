@@ -2,7 +2,7 @@
 - name: Setup mysql server id 
   become: yes
   lineinfile: 
-    dest: /etc/mysql/my.cnf 
+    dest: '{{ my_cnf }}'
     regexp: '^#(server-id		=) 1$'
     line: '\1 {{ mysql_server_id }}'
     backrefs: yes

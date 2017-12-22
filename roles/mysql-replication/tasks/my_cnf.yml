@@ -1,0 +1,9 @@
+- name: set my.cnf location Debian
+  set_fact:
+    my_cnf: "/etc/mysql/my.cnf"
+  when: ansible_distribution == "Debian"
+
+- name: set my.cnf location Ubuntu
+  set_fact:
+    my_cnf: "/etc/mysql/mysql.conf.d/mysqld.cnf"
+  when: ansible_distribution == "Ubuntu"

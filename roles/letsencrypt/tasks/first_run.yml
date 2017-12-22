@@ -40,7 +40,7 @@
 
 - name: copy letsencrpt certificates and keys
   become: yes
-  shell: 'cp /etc/letsencrypt/live/{{ ansible_fqdn }}/{{ item.src }} {{ pki_location + "/" + item.dst }}' 
+  shell: 'cp /etc/letsencrypt/live/{{ ansible_fqdn|lower }}/{{ item.src }} {{ pki_location + "/" + item.dst }}' 
   with_items:
    - src: privkey.pem
      dst: '{{ ansible_fqdn }}.key'

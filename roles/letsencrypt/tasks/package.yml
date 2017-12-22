@@ -8,11 +8,13 @@
    - ca-certificates
    - openssl
 
+#repository
 - name: Add Debian Jessie Backports
   become: yes
   apt_repository:
     repo: 'deb http://http.debian.net/debian jessie-backports main'
     state: present
+  when: ansible_distribution == "Debian"
 
 - name: Add Debian Jessie Backports Source
   become: yes
@@ -20,7 +22,16 @@
     repo: 'deb-src http://http.debian.net/debian jessie-backports main'
     state: present
     update_cache: yes
+  when: ansible_distribution == "Debian"
 
+- name: Add Ubuntu certbot ppa
+  become: yes
+  apt_repository:
+    repo: 'ppa:certbot/certbot'
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+#install
 - name: Install certbot package
   become: yes
   apt:
@@ -29,5 +40,15 @@
     force: yes
     update_cache: yes
     state: latest
+  when: ansible_distribution == "Debian"
+
+- name: Install certbot package
+  become: yes
+  apt:
+    name: certbot
+    force: yes
+    update_cache: yes
+    state: latest
+  when: ansible_distribution == "Ubuntu"
 
 

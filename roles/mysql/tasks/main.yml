@@ -1,5 +1,6 @@
-- include: apt.yml tags=mysql_apt
-- include: root.yml tags=mysql_root
-- include: ssl.yml tags=mysql_ssl
-- include: reversedns.yml tags=mysql_reversedns
-- include: utf8.yml tags=mysql_utf8
+- import_tasks: apt.yml
+- import_tasks: root.yml
+- import_tasks: ssl.yml
+- import_tasks: reversedns.yml
+- import_tasks: utf8.yml
+  when: mysql_utf8 is defined and mysql_utf8
