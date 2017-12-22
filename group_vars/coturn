@@ -3,7 +3,7 @@ coturn_mysql_host: localhost
 # mysql
 mysql_replication_role: slave
 
-mysql_replication_username: "{{ host.hostname }}"
+mysql_replication_username: "{{ ansible_fqdn | hash('sha1') | regex_search('^(.{12})') }}"
 coturn_mysql_user: "coturn"
 
 # munin
