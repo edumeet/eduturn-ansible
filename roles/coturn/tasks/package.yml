@@ -15,7 +15,7 @@
     update_cache: yes
   when: ansible_distribution == "Debian"
   
-- name: Install coturn package
+- name: Install coturn package Debian
   become: yes
   apt:
     name: coturn
@@ -25,7 +25,7 @@
     state: latest
   when: ansible_distribution == "Debian"
 
-- name: Install coturn package
+- name: Install coturn package Ubuntu
   become: yes
   apt:
     name: coturn
