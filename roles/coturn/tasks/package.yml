@@ -24,3 +24,12 @@
     update_cache: yes
     state: latest
   when: ansible_distribution == "Debian"
+
+- name: Install coturn package
+  become: yes
+  apt:
+    name: coturn
+    force: yes
+    update_cache: yes
+    state: latest
+  when: ansible_distribution == "Ubuntu"
