@@ -4,5 +4,6 @@
   copy: 
     src: skip-name-resolve.cnf
     dest: /etc/mysql/conf.d/skip-name-resolve.cnf
+    group: mysql
   notify:
     - restart mysql
