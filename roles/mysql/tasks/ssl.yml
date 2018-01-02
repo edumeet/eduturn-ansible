@@ -11,10 +11,22 @@
 - name: apparmor
   become: yes
   lineinfile: 
+    dest: /etc/apparmor.d/usr.sbin.mysqld
+    regexp: '^( ?)#(include <local/usr.sbin.mysqld>)$'
+    line: '\1\2'
+    backrefs: yes
+  notify:
+    - restart apparmor
+
+- name: apparmor local
+  become: yes
+  lineinfile: 
     dest: /etc/apparmor.d/local/usr.sbin.mysqld
     regexp: '^  \/etc\/pki\/\* r,$'
     line: '  /etc/pki/* r,'
     insertafter: EOF
+  notify:
+    - restart apparmor
 
 # Configure mysql to use SSL
 - name: Configure mysql to use SSL, create /etc/mysql/conf.d/ssl.cnf
