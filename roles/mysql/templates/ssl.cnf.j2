@@ -5,11 +5,9 @@ ssl-cert={{ pki_location }}/{{ansible_fqdn }}.crt
 ssl-key={{ pki_location }}/{{ansible_fqdn }}.pkcs1.key
 
 [client]
-ssl
+ssl-mode=VERIFY_CA
 ssl-ca={{ pki_location }}/ca.crt
 
 [mysqldump]
-ssl
+ssl-mode=VERIFY_CA
 ssl-ca={{ pki_location }}/ca.crt
-
-
