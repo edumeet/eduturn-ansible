@@ -5,6 +5,7 @@
   apt_repository:
     repo: 'deb http://http.debian.net/debian jessie-backports main'
     state: present
+  when: ansible_distribution == "Debian"
 
 - name: Add Debian Jessie Backports Source
   become: yes
@@ -12,7 +13,8 @@
     repo: 'deb-src http://http.debian.net/debian jessie-backports main'
     state: present
     update_cache: yes
-
+  when: ansible_distribution == "Debian"
+  
 - name: Install coturn package
   become: yes
   apt:
@@ -21,5 +23,4 @@
     force: yes
     update_cache: yes
     state: latest
-
-
+  when: ansible_distribution == "Debian"
