@@ -1,4 +1,4 @@
-- stat: path=/etc/letsencrypt/live/{{ansible_fqdn}}/cert.pem
+- stat: path=/etc/letsencrypt/live/{{ansible_fqdn|lower}}/cert.pem
   become: yes
   register: letsencrypt_cert
   tags: letsencrypt-first
