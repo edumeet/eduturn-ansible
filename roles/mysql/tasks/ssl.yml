@@ -22,5 +22,6 @@
   template: 
     src: ssl.cnf.j2 
     dest: /etc/mysql/conf.d/ssl.cnf
+    group: mysql
   notify:
     - restart mysql
