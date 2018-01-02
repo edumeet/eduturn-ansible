@@ -3,9 +3,11 @@
   register: letsencrypt_cert
   tags: letsencrypt-first
 
-- include: package.yml tags=letsencrypt-first
+- include_tasks: package.yml
   when: letsencrypt_cert.stat.exists == False
-- include: first_run.yml tags=letsencrypt-first
+  
+- include_tasks: first_run.yml
   when: letsencrypt_cert.stat.exists == False
 
-- include: renew.yml
+- include_tasks: renew.yml
+  when: letsencrypt_cert.stat.exists == False
