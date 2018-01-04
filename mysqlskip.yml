@@ -1,5 +1,6 @@
 ---
 - hosts: 
+   - coturn-ltc
    - coturn-rest
   tasks:
   - name: get slave
