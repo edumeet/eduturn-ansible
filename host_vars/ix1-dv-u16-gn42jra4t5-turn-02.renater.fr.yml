@@ -9,11 +9,11 @@ dns:
 timezone: Europe/Paris
 
 ipv4:
- address: 195.98.238.22
+ address: 195.98.238.29
  netmask: 255.255.255.224
  gateway: 195.98.238.31
 ipv6:
- address: 2001:660:3001:4003::22
+ address: 2001:660:3001:4003::29
  netmask: 64
  gateway: 2001:660:3001:4003::1
 
