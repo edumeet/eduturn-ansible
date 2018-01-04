@@ -50,6 +50,7 @@ stun1.srv.lrz.de
 turn1.man.poznan.pl
 gn4webrtc-stun.carnet.hr
 iturncat-ltc.i2cat.net
+ix1-dv-u16-GN42JRA4T5-Turn-01.renater.fr
 
 [coturn-rest]
 coturn-rest-[3:4].lab.vvc.niif.hu
@@ -59,6 +60,7 @@ stun2.srv.lrz.de
 iturncat.i2cat.net
 turn2.man.poznan.pl
 gn4webrtc-stun2.carnet.hr
+ix1-dv-u16-gn42jra4t5-turn-02.renater.fr
 
 [front]
 front.turn.geant.org
