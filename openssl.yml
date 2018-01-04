@@ -1,0 +1,12 @@
+---
+- hosts: 
+   - all
+  tasks:
+  - name: open cert
+    become: yes
+    ignore_errors: yes
+    shell: openssl x509 -in /etc/letsencrypt/live/{{ansible_fqdn|lower}}/cert.pem -enddate -noout 
+    register: enddate
+
+  - name: Print enddate
+    debug: var=enddate.stdout
