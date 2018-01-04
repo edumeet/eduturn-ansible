@@ -1,2 +1,2 @@
-- include: apt.yml tags=php_apt
-- include: mod_apache.yml tags=php_mod_apache
+- import_tasks: apt.yml
+- import_tasks: mod_apache.yml

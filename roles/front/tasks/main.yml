@@ -1,4 +1,4 @@
-- include: git.yml tags=web_git_clone
+- import_tasks: git.yml
 - include: ferm.yml 
-- include: mysql.yml tags=web_mysql_add_user
+- import_tasks: mysql.yml
 - include: apache.yml

@@ -1,2 +1,2 @@
-- include: apt.yml tags=composer_apt
-- include: install.yml tags=composer_install
+- import_tasks: apt.yml
+- import_tasks: install.yml

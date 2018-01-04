@@ -1,2 +1,2 @@
-- include: apt.yml tags=geoip_apt
-- include: geolite.yml tags=geoip_geolite
+- import_tasks: apt.yml
+- import_tasks: geolite.yml

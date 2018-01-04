@@ -1,9 +1,9 @@
-- include: apt.yml tags=ssp_apt
-- include: cert.yml tags=ssp_cert
-- include: config.yml tags=ssp_config
-- include: cron.yml tags=ssp_cron
-- include: metarefresh.yml tags=ssp_metarefresh
-- include: privacy.yml tags=ssp_privacy
-- include: attributescope.yml tags=ssp_attributescope
-- include: apache.yml tags=ssp_apache
-- include: php.yml tags=ssp_php
+- import_tasks: apt.yml
+- import_tasks: cert.yml
+- import_tasks: config.yml
+- import_tasks: cron.yml
+- import_tasks: metarefresh.yml
+- import_tasks: privacy.yml
+- import_tasks: attributescope.yml
+- import_tasks: apache.yml
+- import_tasks: php.yml

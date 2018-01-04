@@ -1,1 +1,1 @@
-- include: pki.yml tags=pki
+- import_tasks: pki.yml

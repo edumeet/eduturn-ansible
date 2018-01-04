@@ -1,12 +1,12 @@
-- include: mysql-master.yml tags=coturn_masterdb
+- import_tasks: mysql-master.yml
   when: mysql_replication_role == "master"
-- include: package.yml tags=coturn_package
+- import_tasks: package.yml
   when: mysql_replication_role == "slave"
-- include: mysql-slave.yml tags=coturn_mysql
+- import_tasks: mysql-slave.yml
   when: mysql_replication_role == "slave"
-- include: config.yml tags=coturn_config
+- import_tasks: config.yml
   when: mysql_replication_role == "slave"
-- include: ferm.yml tags=coturn_ferm
+- import_tasks: ferm.yml
   when: mysql_replication_role == "slave"
 
 

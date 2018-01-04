@@ -1,3 +1,3 @@
-- include: base.yml tags=munin-base
-- include: session.yml tags=munin-session
+- import_tasks: base.yml
+- import_tasks: session.yml
 
