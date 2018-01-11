@@ -78,7 +78,7 @@
   lineinfile:
     dest: /etc/turnserver.conf
     regexp: '^#(relay-ip)=2607:f0d0:1002:51::5$'
-    line: '\1i={{ ipv6.address }}'
+    line: '\1={{ ipv6.address }}'
     state: present
     backrefs: yes
   notify: Restart coturn
