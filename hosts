@@ -41,7 +41,9 @@
 # leading 0s:
 
 #db-[99:101]-node.example.com
-
+[renater]
+ix1-dv-u16-GN42JRA4T5-Turn-01.renater.fr
+ix1-dv-u16-gn42jra4t5-turn-02.renater.fr
 
 
 [coturn-ltc]
