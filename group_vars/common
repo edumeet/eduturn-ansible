@@ -33,3 +33,8 @@ monitor_host: monitor.turn.geant.org
 
 #mysql master
 mysql_replication_master: db.turn.geant.org
+
+# munin
+munin_master_fqdn: monitor.turn.geant.org
+munin_master_ipv4_regex: ^193\.224\.22\.116$
+munin_master_ipv6_regex: ^2001:738:0:519:f816:3eff:fee8:184a$

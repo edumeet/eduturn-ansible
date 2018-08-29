@@ -9,3 +9,4 @@
     - { role: shibboleth_sp }
     - { role: composer }
     - { role: front }
+    - { role: munin }

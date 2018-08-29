@@ -6,7 +6,4 @@ mysql_replication_role: slave
 mysql_replication_username: "{{ ansible_fqdn | hash('sha1') | regex_search('^(.{12})') }}"
 coturn_mysql_user: "coturn"
 
-# munin
-munin_master_fqdn: monitor.turn.geant.org
-munin_master_ipv4_regex: ^193\.224\.22\.116$
-munin_master_ipv6_regex: ^2001:738:0:519:f816:3eff:fee8:184a$
+

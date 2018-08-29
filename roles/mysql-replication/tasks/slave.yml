@@ -97,7 +97,8 @@
 # Dump => pipe => Load mysql replication databases using the replication user on slave
 - name: Dump => pipe => Load mysql replication databases using the replication user on slave
   become: yes
-  shell: 'mysqldump --host={{ mysql_replication_master }} --user={{ mysql_replication_username }} --password={{ mysql_replication_password.stdout }} --ssl-mode=VERIFY_IDENTITY --add-drop-database --master-data --databases {{ mysql_replication_databases | join(" ")}} | mysql'
+  shell: 'mysqldump --host={{ mysql_replication_master }} --user={{ mysql_replication_username }} --password={{ mysql_replication_password.stdout }} --ssl-mode=PREFERRED --add-drop-database --master-data --databases {{ mysql_replication_databases | join(" ")}} | mysql'
+#  shell: 'mysqldump --host={{ mysql_replication_master }} --user={{ mysql_replication_username }} --password={{ mysql_replication_password.stdout }} --ssl-mode=PREFERRED --add-drop-database --master-data --databases {{ mysql_replication_databases | join(" ")}} | mysql --ssl-mode=PREFERRED'
  
 # Revoke mysql replication user all rights, on replication databases, on master, restricted to slave ipv4/ipv6, delegate_to: master_mysql_server
 - name: Revoke mysql replication user all rights, on replication databases, on master, restricted to slave, delegate_to master_mysql_server
