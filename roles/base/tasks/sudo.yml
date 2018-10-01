@@ -4,7 +4,7 @@
   become: yes
   apt:
     name: sudo
-    state: installed
+    state: present
 
 - name: Configure sudo
   become: yes

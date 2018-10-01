@@ -1,7 +1,12 @@
 # iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-- name: accept temporary https to be able to validate newcert request
+- name: accept temporary https to be able to validate newcert request on IPv4
   become: yes
-  shell: 'iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT'
+  shell: 'iptables -I INPUT -j ACCEPT'
+
+- name: accept temporary https to be able to validate newcert request on IPv6
+  become: yes
+  shell: 'ip6tables -I INPUT -j ACCEPT'
+
 
 # certbot certonly 
 - name: request cert for first time
@@ -15,9 +20,13 @@
   shell: 'certbot certonly --standalone --domain {{ ansible_fqdn }} --domain {{letsencrypt_extra_domain}} -m {{ letsencrypt_email }} --agree-tos -t -n'
   when: letsencrypt_extra_domain is defined
 
-- name: remove previously added accept https to be able to reuqest newcert
+- name: remove previously added accept https to be able to reuqest newcert on IPv4
   become: yes
-  shell: 'iptables -D INPUT -p tcp -m tcp --dport 443 -j ACCEPT'
+  shell: 'iptables -D INPUT -j ACCEPT'
+
+- name: remove previously added accept https to be able to reuqest newcert on IPv6
+  become: yes
+  shell: 'ip6tables -D INPUT -j ACCEPT'
 
   
 # install cron renew and convert to pkcs1 and after restart all ssl services.

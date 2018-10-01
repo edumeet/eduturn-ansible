@@ -7,4 +7,15 @@
     line: '\1 {{ mysql_server_id }}'
     backrefs: yes
     state: present
+  when: ansible_distribution == "Debian" and ansible_distribution_version != "9.0"
   notify: Restart mysql
+
+# Setup mysql server id for master and slave
+- name: Setup mysql server id 
+  become: yes
+  template:
+    src: serverid.j2
+    dest: '/etc/mysql/conf.d/serverid'
+  when: ansible_distribution == "Debian" and ansible_distribution_version == "9.0"
+  notify: Restart mysql
+

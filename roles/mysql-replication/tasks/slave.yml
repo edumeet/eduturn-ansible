@@ -1,13 +1,23 @@
 # Config binlog replication database filter (replicate_do_db)
 - name: Config binlog replication database filter (replicate_do_db)
   become: yes
+  template:
+    src: replication.j2
+    dest: '/etc/mysql/conf.d/replication'
+  when: ansible_distribution == "Debian" and ansible_distribution_version == "9.0"
+  notify: Restart mysql
+
+- name: Config binlog replication database filter (replicate_do_db)
+  become: yes
   lineinfile:
     dest: '{{ my_cnf }}'
     insertafter: '^#binlog_ignore_db	= include_database_name$'
     line: 'replicate_do_db		= {{ item }}'
     state: present
   with_items: '{{ mysql_replication_databases }}'
+  when: ansible_distribution == "Debian" and ansible_distribution_version != "9.0"
   notify: Restart mysql
+
 
 # Allow ferm mysql access delegate_to: master_mysql_server
 - name: Allow ferm mysql access delegate_to master_mysql_server
@@ -97,7 +107,7 @@
 # Dump => pipe => Load mysql replication databases using the replication user on slave
 - name: Dump => pipe => Load mysql replication databases using the replication user on slave
   become: yes
-  shell: 'mysqldump --host={{ mysql_replication_master }} --user={{ mysql_replication_username }} --password={{ mysql_replication_password.stdout }} --ssl-mode=PREFERRED --add-drop-database --master-data --databases {{ mysql_replication_databases | join(" ")}} | mysql'
+  shell: 'mysqldump --host={{ mysql_replication_master }} --user={{ mysql_replication_username }} --password={{ mysql_replication_password.stdout }} --add-drop-database --master-data --databases {{ mysql_replication_databases | join(" ")}} | mysql'
 #  shell: 'mysqldump --host={{ mysql_replication_master }} --user={{ mysql_replication_username }} --password={{ mysql_replication_password.stdout }} --ssl-mode=PREFERRED --add-drop-database --master-data --databases {{ mysql_replication_databases | join(" ")}} | mysql --ssl-mode=PREFERRED'
  
 # Revoke mysql replication user all rights, on replication databases, on master, restricted to slave ipv4/ipv6, delegate_to: master_mysql_server

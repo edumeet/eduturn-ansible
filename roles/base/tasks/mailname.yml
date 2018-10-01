@@ -33,7 +33,7 @@
     - exim4-config
     - exim4
 
-- name: Setup Internet
+- name: Setup Exim4 as Internet Mail Server
   become: yes
   lineinfile:
     dest: /etc/exim4/update-exim4.conf.conf

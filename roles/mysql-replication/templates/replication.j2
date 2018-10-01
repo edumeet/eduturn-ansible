@@ -1,0 +1,5 @@
+[mysqld]
+{% for item in mysql_replication_databases %}
+replicate_do_db              = {{ item }}
+{% endfor %}
+

@@ -2,7 +2,7 @@
   become: yes
   apt: 
     name: libapache2-mod-shib2
-    state: installed
+    state: present
 
 - name: Enable apache2 shibboleth modul
   become: yes

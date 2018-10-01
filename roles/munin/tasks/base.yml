@@ -3,7 +3,7 @@
   become: yes
   apt: 
     name: munin-node 
-    state: installed
+    state: present
     update_cache: yes
 
 - name: Setup munin-master allowed munin-master ipv4

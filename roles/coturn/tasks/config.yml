@@ -168,8 +168,8 @@
   become: yes
   lineinfile:
     dest: /etc/turnserver.conf
-    regexp: '^#(mysql-userdb="host)=<host>( dbname)=<database-name>( user)=<database-user>( password)=<database-user-password>( port)=<port>( connect_timeout)=<seconds>(")$'
-    line: '\1={{ coturn_mysql_host }}\2={{ coturn_mysql_db }}\3={{ coturn_mysql_user }}\4={{ coturn_mysql_password.stdout }}\7'
+    regexp: '^#(mysql-userdb="host)=<host>( dbname)=<database-name>( user)=<database-user>( password)=<database-user-password>( port)=<port>( connect_timeout)=<seconds>( read_timeout)=<seconds>(")$'
+    line: '\1={{ coturn_mysql_host }}\2={{ coturn_mysql_db }}\3={{ coturn_mysql_user }}\4={{ coturn_mysql_password.stdout }}\8'
     state: present
     backrefs: yes
   notify: Restart coturn

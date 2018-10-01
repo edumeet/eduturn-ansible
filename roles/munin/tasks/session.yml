@@ -2,7 +2,7 @@
   become: yes
   apt:
     name: expect
-    state: installed
+    state: present
   tags: munin-session
 
 - name: Install coturn session munin plugin

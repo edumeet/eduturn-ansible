@@ -1,16 +1,16 @@
 # coturn install
 
-- name: Add Debian Jessie Backports
+- name: Add Debian Stretch Backports
   become: yes
   apt_repository:
-    repo: 'deb http://http.debian.net/debian jessie-backports main'
+    repo: 'deb http://http.debian.net/debian stretch-backports main'
     state: present
   when: ansible_distribution == "Debian"
 
-- name: Add Debian Jessie Backports Source
+- name: Add Debian Stretch Backports Source
   become: yes
   apt_repository:
-    repo: 'deb-src http://http.debian.net/debian jessie-backports main'
+    repo: 'deb-src http://http.debian.net/debian stretch-backports main'
     state: present
     update_cache: yes
   when: ansible_distribution == "Debian"
@@ -19,7 +19,7 @@
   become: yes
   apt:
     name: coturn
-    default_release: jessie-backports 
+    default_release: stretch-backports 
     force: yes
     update_cache: yes
     state: latest

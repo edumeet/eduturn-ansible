@@ -9,8 +9,6 @@
    - less
    - perl
    - ntp
-   - openssh-blacklist
-   - openssh-blacklist-extra
    - vim
    - bind9-host
    - debian-goodies
@@ -44,14 +42,13 @@
    - rpcbind
      
 # Security support
-- name: Other packages for Debian jessie
+- name: Other Security packages for Debian stable
   become: yes
   apt:
     name: "{{ item }}"
-    state: installed
+    state: present
   with_items:
    - debian-security-support
    - fail2ban
-#  when: ansible_distribution_release == 'jessie'
   tags:
    - harden

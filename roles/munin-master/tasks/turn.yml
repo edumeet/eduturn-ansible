@@ -2,7 +2,7 @@
   become: yes
   apt:
     name: coturn
-    default_release: jessie-backports
+    default_release: stretch-backports
     force: yes
     update_cache: yes
     state: latest
