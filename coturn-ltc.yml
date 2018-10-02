@@ -8,7 +8,7 @@
       private: yes
       confirm: no
   roles:
-    - { role: base }
+#    - { role: base }
     - { role: letsencrypt }
     - { role: mysql }
     - { role: mysql-replication }

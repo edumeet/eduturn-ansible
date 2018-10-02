@@ -47,16 +47,14 @@ ix1-dv-u16-gn42jra4t5-turn-02.renater.fr
 
 
 [coturn-ltc]
-coturn-ltc-[1:2].lab.vvc.niif.hu 
 stun1.srv.lrz.de
 turn1.man.poznan.pl
 gn4webrtc-stun.carnet.hr
 iturncat-ltc.i2cat.net
 ix1-dv-u16-GN42JRA4T5-Turn-01.renater.fr
-turn-ltc-1.lab.vvc.niif.hu
+turn-ltc-[1:2].lab.vvc.niif.hu
 
 [coturn-rest]
-coturn-rest-[3:4].lab.vvc.niif.hu
 coturn-rest-5.uninett.no
 sa8dev.fccn.pt
 stun2.srv.lrz.de
@@ -64,7 +62,7 @@ iturncat.i2cat.net
 turn2.man.poznan.pl
 gn4webrtc-stun2.carnet.hr
 ix1-dv-u16-gn42jra4t5-turn-02.renater.fr
-turn-rest-1.lab.vvc.niif.hu
+turn-rest-[1:2].lab.vvc.niif.hu
 
 [front]
 front.turn.geant.org

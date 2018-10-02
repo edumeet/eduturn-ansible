@@ -1,9 +1,6 @@
 ---
 - hosts: 
-   - monitor
-   - front
-   - api
+   - coturn
   roles:
-    - { role: letsencrypt }
-    - { role: letsencrypt }
+    - { role: base }
 

@@ -1,0 +1,18 @@
+ipv4:
+ address: 193.225.25.43
+ netmask: 255.255.255.224
+ gateway: 193.225.25.62
+ipv6:
+ address: 2001:738:0:51a::43
+ netmask: 64
+ gateway: 2001:738:0:51a::1
+
+host:
+ hostname: turn-ltc-2
+ domain: lab.vvc.niif.hu
+
+# mysql
+mysql_server_id: 20
+
+uncommon_resolvconf: yes
+uncommon_interfaces: yes
