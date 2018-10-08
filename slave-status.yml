@@ -1,0 +1,9 @@
+---
+- hosts: 
+   - coturn
+  tasks:
+  - name: get slave
+    become: yes
+    mysql_replication:
+      mode: getslave
+
