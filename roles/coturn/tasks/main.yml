@@ -8,5 +8,7 @@
   when: mysql_replication_role == "slave"
 - import_tasks: ferm.yml
   when: mysql_replication_role == "slave"
+- import_tasks: pki.yml
+  when: mysql_replication_role == "slave"
 
 
