@@ -1,18 +1,18 @@
 #/bin/bash
 
-if [ -x /usr/sbin/apache2 ];
-then
+# add temp https access
+iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT;
+ip6tables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT;
 
 # stop apache2
+if [ -x /usr/sbin/apache2 ];
+then
 /bin/systemctl stop apache2
-else
-
-# add temp https access
-iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT;
-ip6tables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT;
+fi
 
 #remove port forwarding
-iptables -t nat -D PREROUTING -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 5349
-ip6tables -t nat -D PREROUTING -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 5349
-
+if [ -x /usr/bin/turnserver ];
+then
+iptables -t nat -D PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 3478
+ip6tables -t nat -D PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 3478
 fi

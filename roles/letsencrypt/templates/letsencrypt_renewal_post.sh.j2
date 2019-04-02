@@ -12,22 +12,24 @@ openssl rsa -in {{ pki_location }}/{{ ansible_fqdn }}.key -out {{ pki_location }
 chown root:pki /etc/pki/*
 chmod 0640 /etc/pki/*
 
-if [ -x /usr/sbin/apache2 ];
+#iptables revert temp http access
+if [ -x /usr/sbin/apache2 ] && [ `hostname` != 'db' ];
 then
 /bin/systemctl start apache2
 else
-#iptables revert temp https access
-iptables -D INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-ip6tables -D INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+iptables -D INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+ip6tables -D INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+fi
 
 # revert port forwarding
-iptables -t nat -A PREROUTING -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 5349
-ip6tables -t nat -A PREROUTING -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 5349
+if [ -x /usr/bin/turnserver ] ;
+then
+iptables -t nat -A PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 3478
+ip6tables -t nat -A PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 3478
 
 # restart coturn
-#There is no other way to reload cert
-[ -x /usr/bin/turnserver ] && /bin/systemctl restart coturn
-fi 
+[ -x /usr/bin/turnserver ] && /bin/systemctl kill -s SIGUSR2 coturn.service
+fi
 
 # restart mysql 
 #There is no other way to reload cert
