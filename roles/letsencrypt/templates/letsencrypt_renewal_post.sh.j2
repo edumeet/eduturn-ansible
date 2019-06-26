@@ -21,14 +21,14 @@ iptables -D INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 ip6tables -D INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 fi
 
-# revert port forwarding
-if [ -x /usr/bin/turnserver ] ;
+if [ -x /usr/bin/turnserver -a `hostname` != 'monitor' ] ;
 then
+# revert port forwarding
 iptables -t nat -A PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 3478
 ip6tables -t nat -A PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 3478
 
 # restart coturn
-[ -x /usr/bin/turnserver ] && /bin/systemctl kill -s SIGUSR2 coturn.service
+/bin/systemctl kill -s SIGUSR2 coturn.service
 fi
 
 # restart mysql 

@@ -11,7 +11,7 @@ then
 fi
 
 #remove port forwarding
-if [ -x /usr/bin/turnserver ];
+if [ -x /usr/bin/turnserver -a `hostname` != 'monitor' ];
 then
 iptables -t nat -D PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 3478
 ip6tables -t nat -D PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 3478
