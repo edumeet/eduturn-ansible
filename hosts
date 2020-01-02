@@ -53,7 +53,7 @@ gn4webrtc-stun2.carnet.hr
 turn-ltc-[1:2].lab.vvc.niif.hu
 turn-rest-[1:2].lab.vvc.niif.hu
 
-[coturn-ltc]
+[coturn_ltc]
 stun1.srv.lrz.de
 turn1.man.poznan.pl
 gn4webrtc-stun.carnet.hr
@@ -61,7 +61,7 @@ iturncat-ltc.i2cat.net
 ix1-dv-u16-GN42JRA4T5-Turn-01.renater.fr
 turn-ltc-[1:2].lab.vvc.niif.hu
 
-[coturn-rest]
+[coturn_rest]
 coturn-rest-5.uninett.no
 sa8dev.fccn.pt
 stun2.srv.lrz.de
@@ -83,7 +83,7 @@ api.turn.geant.org
 [monitor]
 monitor.turn.geant.org
 
-[c4e-geant:children]
+[c4e_geant:children]
 front
 api
 db
@@ -93,11 +93,11 @@ monitor
 #193.224.69.58 #ansible
 
 [coturn:children]
-coturn-ltc
-coturn-rest
+coturn_ltc
+coturn_rest
 
 [common:children]
 coturn
-c4e-geant
+c4e_geant
 
 [common]
