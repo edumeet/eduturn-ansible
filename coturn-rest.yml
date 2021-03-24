@@ -1,5 +1,5 @@
 ---
-- hosts: coturn-rest
+- hosts: coturn_rest
   vars: 
     coturn_rest: true  
   vars_prompt:

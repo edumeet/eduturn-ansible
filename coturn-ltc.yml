@@ -1,5 +1,5 @@
 ---
-- hosts: coturn-ltc
+- hosts: coturn_ltc
   vars:
     coturn_rest: false
   vars_prompt:
